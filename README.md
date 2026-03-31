@@ -1,8 +1,81 @@
-# 📖Checklist | Indicadores de Desempenho (ID) dos Resultados de Aprendizagem (RA)
+# 🎁 GiftHub - O seu Amigo Secreto Descomplicado
 
-Este documento detalha os critérios de avaliação e os objetivos de aprendizado alcançados neste projeto, estruturados com base em Resultados de Aprendizagem (RA) que refletem as práticas modernas de desenvolvimento Web e Engenharia de Software Assistida por IA.
+## 👥 Identificação/Autores
+* **Ane Karine** 
+* **Maria Eduarda Guedes** 
+* **Mery Helen** 
 
----
+## 📝 Descrição do projeto
+O **GiftHub** é uma aplicação web desenvolvida para organizar grupos de Amigo Secreto de forma simples e segura. O sistema elimina a complexidade dos sorteios de papel garantindo matematicamente que ninguém tire a si mesmo. O escopo abrange a gestão completa do evento, desde a criação do grupo e ingresso via link de convite, até o sorteio automatizado e a troca de mensagens anônimas entre os pares sorteados.
+
+## 📚 Documentação Técnica (Docs)
+As definições de produto e arquitetura de software estão detalhadas nos seguintes documentos:
+* [📄 Product Requirements Document (PRD)](./docs/prd.md)
+* [🛠️ Software Design Document (SDD)](./docs/sdd.md)
+
+
+## 🗄️ Modelagem de Dados (Diagrama ER)
+
+```mermaid
+ER Diagrama
+    PROFILE ||--o{ GROUP : "organiza"
+    PROFILE ||--o{ MEMBER : "participa"
+    PROFILE ||--o{ MATCH : "é dador/recetor"
+    PROFILE ||--o{ MESSAGE : "envia/recebe"
+    
+    GROUP ||--|{ MEMBER : "contém"
+    GROUP ||--o{ MATCH : "gera"
+    GROUP ||--o{ MESSAGE : "centraliza"
+
+    PROFILE {
+        uuid id PK
+        string full_name
+        string email
+        text wishlist
+    }
+
+    GROUP {
+        uuid id PK
+        string name
+        uuid owner_id FK
+        timestamp draw_date
+        decimal budget
+    }
+
+    MEMBER {
+        uuid id PK
+        uuid group_id FK
+        uuid user_id FK
+    }
+
+    MATCH {
+        uuid id PK
+        uuid group_id FK
+        uuid giver_id FK
+        uuid receiver_id FK
+    }
+
+    MESSAGE {
+        uuid id PK
+        uuid group_id FK
+        uuid sender_id FK
+        uuid receiver_id FK
+        text content
+    }
+```
+## 🎨 Prototipação no Figma
+[🔗 Acessar o protótipo no Figma](https://link-do-seu-figma)
+
+## 🛠️ Stack Tecnológica
+* **Frontend:** Angular 21+ (Standalone, Signals)
+* **Framework CSS:** Tailwind CSS
+* **Biblioteca de UI:** Spartan UI (HLM)
+* **BaaS (Backend as a Service):** Supabase (Auth, PostgreSQL)
+* **Bibliotecas Adicionais:** lucide-angular (Ícones), date-fns (Datas), zod (Validação).
+
+## 🌐 Link para o site em produção
+[🚀 Acessar a aplicação em produção](https://seu-link-aqui)
+
 
 ## RA1 - Design e Experiência do Usuário (UI/UX) com IA
 **Competência:** Compreensão de que código sem usabilidade não tem valor. Domínio de ferramentas de IA para acelerar o design (Design-to-Code) com rigor técnico.
@@ -82,3 +155,37 @@ Este documento detalha os critérios de avaliação e os objetivos de aprendizad
 - [ ] **ID30:** Especificação Técnica: Geração de arquivos `.spec.md` antes do código.
 - [ ] **ID31:** Orquestração: Configuração de servidores **MCP** e Skills de Angular 20+.
 - [ ] **ID32:** Validação Técnica: Revisão de código e orientação de IA para Testes Unitários (`.spec.ts`).
+
+-------------------------------------------------------------
+## 💻 Instruções de Execução
+
+1. **Clone o repositório:**
+```bash
+git clone [URL_DO_SEU_REPOSITORIO]
+cd [NOME_DA_PASTA]
+```
+
+2. **Instale as dependências:**
+```bash
+npm install
+```
+
+3. **Configure as variáveis de ambiente:**
+Crie o arquivo src/environments/environment.ts:
+```bash
+export const environment = {
+  production: false,
+  supabaseUrl: 'SUA_URL_DO_SUPABASE',
+  supabaseKey: 'SUA_CHAVE_PUBLICA_DO_SUPABASE'
+};
+```
+
+4. **Execute o projeto:**
+```bash
+ng serve
+```
+Acesse: http://localhost:4200/
+
+
+## 📱 Telas da Aplicação
+(Adicione aqui as imagens ou GIFs do seu projeto em funcionamento).
