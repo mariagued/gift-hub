@@ -1,6 +1,6 @@
 # 🛠️ Software Design Document (SDD)
 
-**Projeto:** [Nome do Projeto]
+**Projeto:** Gift Hub
 **Versão:** 1.0.0  
 **Status:** ⚪ Aguardando Geração de Especificações.
 
