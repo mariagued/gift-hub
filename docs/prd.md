@@ -1,6 +1,6 @@
 # 📄 Product Requirements Document (PRD)
 
-**Projeto:** [Nome do Projeto - ex: UTF-Secret]  
+**Projeto:** Gift Hub  
 **Versão:** 1.0.0  
 **Status:** 🟡 Em Definição (MVP)
 
