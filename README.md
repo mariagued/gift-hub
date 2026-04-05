@@ -139,4 +139,5 @@ Acesse: http://localhost:4200/
 
 
 ## 📱 Telas da Aplicação
-(Adicione aqui as imagens ou GIFs do seu projeto em funcionamento).
+
+
