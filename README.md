@@ -14,55 +14,6 @@ As definições de produto e arquitetura de software estão detalhadas nos segui
 * [🛠️ Software Design Document (SDD)](./docs/sdd.md)
 
 
-## 🗄️ Modelagem de Dados (Diagrama ER)
-
-```mermaid
-ER Diagrama
-    PROFILE ||--o{ GROUP : "organiza"
-    PROFILE ||--o{ MEMBER : "participa"
-    PROFILE ||--o{ MATCH : "é dador/recetor"
-    PROFILE ||--o{ MESSAGE : "envia/recebe"
-    
-    GROUP ||--|{ MEMBER : "contém"
-    GROUP ||--o{ MATCH : "gera"
-    GROUP ||--o{ MESSAGE : "centraliza"
-
-    PROFILE {
-        uuid id PK
-        string full_name
-        string email
-        text wishlist
-    }
-
-    GROUP {
-        uuid id PK
-        string name
-        uuid owner_id FK
-        timestamp draw_date
-        decimal budget
-    }
-
-    MEMBER {
-        uuid id PK
-        uuid group_id FK
-        uuid user_id FK
-    }
-
-    MATCH {
-        uuid id PK
-        uuid group_id FK
-        uuid giver_id FK
-        uuid receiver_id FK
-    }
-
-    MESSAGE {
-        uuid id PK
-        uuid group_id FK
-        uuid sender_id FK
-        uuid receiver_id FK
-        text content
-    }
-```
 ## 🎨 Prototipação no Figma
 [🔗 Acessar o protótipo no Figma](https://link-do-seu-figma)
 
