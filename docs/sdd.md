@@ -1,4 +1,4 @@
-# 📐 Software Design Document (SDD) - Tô Aqui!
+# 📐 Software Design Document (SDD) - Gift Hub!
 
 **Projeto:** Gift Hub
 **Versão:** 1.0.0  
