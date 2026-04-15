@@ -4,6 +4,8 @@
   "description": "Monorepo do projeto da disciplina",
   "private": true,
   "scripts": {
+    "prisma:generate": "prisma generate",
+    "prisma:deploy": "prisma migrate deploy",
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
