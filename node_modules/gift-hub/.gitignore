@@ -1,0 +1,16 @@
+node_modules
+
+/generated/prisma
+
+# Dependências
+node_modules/
+
+# Variáveis de Ambiente (Segurança)
+.env
+.env.*
+
+# 🟢 EXCEÇÃO: O arquivo de exemplo DEVE ir para o Git!
+!.env.example
+
+# Pastas do Docker e Banco de Dados Local
+postgres_data/
