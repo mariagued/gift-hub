@@ -14,8 +14,8 @@ As definições de produto e arquitetura de software estão detalhadas nos segui
 * [🛠️ Software Design Document (SDD)](./docs/sdd.md)
 
 
-## 🎨 Prototipação no Figma
-[🔗 Acessar o protótipo no Figma](https://link-do-seu-figma)
+## 🎨 Prototipação no Stitch
+[🔗 Acessar o protótipo da aplicação](https://stitch.withgoogle.com/preview/4690656891186849666?node-id=3c66de92b3dc43d5b4557582bd47e5b0)
 
 ## 🛠️ Stack Tecnológica
 * **Frontend:** Angular 21+ (Standalone, Signals)
