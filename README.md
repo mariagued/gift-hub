@@ -112,8 +112,8 @@ As definições de produto e arquitetura de software estão detalhadas nos segui
 
 1. **Clone o repositório:**
 ```bash
-git clone [URL_DO_SEU_REPOSITORIO]
-cd [NOME_DA_PASTA]
+git clone https://github.com/mariagued/gift-hub.git
+cd gift-hub
 ```
 
 2. **Instale as dependências:**
