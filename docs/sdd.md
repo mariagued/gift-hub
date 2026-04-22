@@ -33,6 +33,7 @@ O projeto utiliza uma arquitetura de Monorepo. O Agente de IA deve respeitar a s
 * **Frontend:** Angular v17+ (Obrigatório o uso da nova Control Flow `@if`, `@for` e configuração estrita com `Standalone Components`. O uso de `NgModule` está proibido).
 * **ORM:** Prisma v5.x (Interface oficial com o banco de dados).
 * **Testes:** `jest` e `supertest` (Obrigatório seguir o padrão oficial do NestJS para testes unitários e E2E. Proibido o uso de Vitest, Mocha ou qualquer outro test runner).
+* **UI/UX:** `DaisyUI` (A equipe optou por utilizar o DaisyUI em conjunto com o Tailwind CSS. A justificativa baseia-se no "Foco em Velocidade", uma vez que a biblioteca provê componentes semânticos pré-construídos que aceleram a prototipação, mantendo o HTML limpo e permitindo fácil customização via Design Tokens no tailwind.config.js).
 
 ### Bibliotecas e Utilitários Permitidos
 * **WebSockets:** Socket.io v4.x (integrado via `@nestjs/platform-socket.io` v10.x).

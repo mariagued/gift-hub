@@ -16,5 +16,8 @@
         "monorepo"
     ],
     "author": "Turma de Desenvolvimento Web",
-    "license": "UNLICENSED"
+    "license": "UNLICENSED",
+    "devDependencies": {
+        "daisyui": "^5.5.19"
+    }
 }
