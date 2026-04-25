@@ -112,6 +112,13 @@ erDiagram
 * **CreateSessionDTO:** `{ courseId: string, durationMinutes: number }` (Exclusivo Professor).
 * **CheckInDTO:** `{ qrToken: string }` -> O `qrToken` é um JWT assinado com validade de 15 segundos.
 
+### 📂 5.1. Estrutura de Pastas Global (Workspace)
+O projeto utiliza uma estrutura de Monorepo para separar a documentação, o backend (futuro) e o frontend.
+
+* **`docs/`**: Documentação oficial do projeto (PRD, SDD, manuais).
+* **`apps/api/`**: Reservado para o Backend/Servidor (Node/Supabase Edge Functions).
+* **`apps/web/`**: Aplicação Frontend principal (Angular + Tailwind).
+
 
 ## 🏗️ 6. Scaffolding Macro (Arquitetura Backend)
 
