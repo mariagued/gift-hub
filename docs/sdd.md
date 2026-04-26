@@ -62,50 +62,40 @@ O projeto utiliza uma arquitetura de Monorepo. O Agente de IA deve respeitar a s
 
 ```mermaid
 erDiagram
-    COURSE ||--o{ ENROLLMENT : "possui pauta de"
-    USER ||--o{ ENROLLMENT : "matriculado em"
-    USER ||--o{ ATTENDANCE : "realiza"
-    COURSE ||--o{ SESSION : "possui"
-    SESSION ||--o{ ATTENDANCE : "contém"
+    GROUP ||--o{ PARTICIPANT : "possui"
+    USER ||--o{ PARTICIPANT : "torna-se"
+    USER ||--o{ WISH : "cadastra"
+    GROUP ||--o{ DRAW : "gera"
+    DRAW ||--o{ PAIR : "contém"
 
     USER {
         string id PK
-        string email UK "E-mail validado via Pauta"
+        string email UK
         string name
-        string ra UK "Registro Acadêmico (Importado)"
-        string role "PROFESSOR | STUDENT | ADMIN"
-        datetime createdAt
+        string avatarUrl
     }
 
-    COURSE {
+    GROUP {
         string id PK
-        string name
-        string code "Ex: TSI32B"
-        string professorId FK
+        string name "Ex: Amigo Secreto Família"
+        datetime eventDate
+        float budgetLimit
     }
 
-    ENROLLMENT {
+    PARTICIPANT {
         string id PK
-        string courseId FK
-        string studentEmail "Usado para pré-cadastro antes do aluno logar"
-        string studentId FK "Nulo até o aluno logar pela 1ª vez"
+        string groupId FK
+        string userId FK
+        string role "ADMIN | MEMBER"
     }
 
-    SESSION {
+    WISH {
         string id PK
-        string courseId FK
-        datetime startTime
-        datetime endTime
-        boolean isActive
+        string userId FK
+        string description "O que eu quero ganhar"
+        string link "Link do produto"
     }
-
-    ATTENDANCE {
-        string id PK
-        string sessionId FK
-        string studentId FK
-        datetime timestamp
-        boolean isManual "True se inserido pelo Prof (US08)"
-    }
+    
 ```
 
 ## 📑 5. Contratos Globais (DTOs & Interfaces)
