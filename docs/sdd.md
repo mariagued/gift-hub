@@ -24,7 +24,10 @@ O projeto utiliza uma arquitetura de Monorepo. O Agente de IA deve respeitar a s
 * **Stitch MCP (Google):** Utilizado para a geração e prototipação de interfaces Angular. Consulte este contexto para garantir que os componentes sigam os padrões visuais e funcionais definidos no Stitch.
 
 ## 📦 3. Stack Tecnológica e Bibliotecas
-> Definição estrita das tecnologias permitidas. Nenhuma dependência externa deve ser instalada sem refletir aqui.
+### 🎨 Interface & Design System
+* **Framework:** Tailwind CSS v3.x.
+* **Component Library:** **DaisyUI v5.x** (Opção A).
+* **Justificativa da Escolha:** A DaisyUI foi selecionada para este projeto devido à sua arquitetura baseada em classes semânticas, o que acelera drasticamente a prototipagem. Diferente de outras bibliotecas, ela permite a customização profunda dos Design Tokens diretamente no `tailwind.config.js`. Isso possibilitou a implementação fiel da estratégia visual "Curated Celebration", garantindo que componentes como botões e cards sigam rigorosamente a paleta violeta e o raio de arredondamento pílula definidos no protótipo do Stitch, sem inflar o bundle final da aplicação.
 
 ### Core & Infraestrutura
 * **Ambiente:** Node.js v20.x LTS.
