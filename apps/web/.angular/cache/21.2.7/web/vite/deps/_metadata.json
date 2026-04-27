@@ -1,0 +1,34 @@
+{
+  "hash": "c55a976d",
+  "configHash": "fb0c61fe",
+  "lockfileHash": "c0e1f27b",
+  "browserHash": "a417cd58",
+  "optimized": {
+    "@angular/core": {
+      "src": "../../../../../../node_modules/@angular/core/fesm2022/core.mjs",
+      "file": "@angular_core.js",
+      "fileHash": "0e12f818",
+      "needsInterop": false
+    },
+    "@angular/platform-browser": {
+      "src": "../../../../../../node_modules/@angular/platform-browser/fesm2022/platform-browser.mjs",
+      "file": "@angular_platform-browser.js",
+      "fileHash": "24beebbf",
+      "needsInterop": false
+    },
+    "@angular/router": {
+      "src": "../../../../../../node_modules/@angular/router/fesm2022/router.mjs",
+      "file": "@angular_router.js",
+      "fileHash": "e0f695bc",
+      "needsInterop": false
+    }
+  },
+  "chunks": {
+    "chunk-LFURPANQ": {
+      "file": "chunk-LFURPANQ.js"
+    },
+    "chunk-BDPTHPGI": {
+      "file": "chunk-BDPTHPGI.js"
+    }
+  }
+}
