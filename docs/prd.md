@@ -1,4 +1,4 @@
-# 📄 Product Requirements Document (PRD) - Tô Aqui!
+# 📄 Product Requirements Document (PRD) - Gift Hub!
 
 **Projeto:** Gift Hub
 **Versão:** 1.0.0 (Refinada para Negócio com Base em Dados Reais)  
