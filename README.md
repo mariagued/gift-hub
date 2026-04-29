@@ -31,9 +31,9 @@ As definições de produto e arquitetura de software estão detalhadas nos segui
 ## RA1 - Design e Experiência do Usuário (UI/UX) com IA
 **Competência:** Compreensão de que código sem usabilidade não tem valor. Domínio de ferramentas de IA para acelerar o design (Design-to-Code) com rigor técnico.
 
-- [X] **ID1:** Desenvolver protótipos navegáveis (ex: Stitch/Figma) com foco em diretrizes de usabilidade.
-- [X] **ID2:** Projetar interfaces responsivas com abordagem **Mobile-First**.
-- [X] **ID3:** Projetar experiência de aplicativo nativo (**PWA**), configurando `manifest.webmanifest` e estados offline.
+- [ ] **ID1:** Desenvolver protótipos navegáveis (ex: Stitch/Figma) com foco em diretrizes de usabilidade.
+- [ ] **ID2:** Projetar interfaces responsivas com abordagem **Mobile-First**.
+- [ ] **ID3:** Projetar experiência de aplicativo nativo (**PWA**), configurando `manifest.webmanifest` e estados offline.
 
 ---
 
@@ -92,8 +92,8 @@ As definições de produto e arquitetura de software estão detalhadas nos segui
 ## RA7 - Engenharia de Software, Versionamento e DevOps
 **Competência:** Gerenciamento de código, colaboração e entrega contínua.
 
-- [X] **ID25:** Gestão de repositório seguindo **Gitflow** (`main` e `develop`).
-- [X] **ID26:** Colaboração via Pull Requests e resolução de conflitos.
+- [ ] **ID25:** Gestão de repositório seguindo **Gitflow** (`main` e `develop`).
+- [ ] **ID26:** Colaboração via Pull Requests e resolução de conflitos.
 - [ ] **ID27:** Build moderno e deploy automatizado (Vercel/GitHub Pages).
 
 ---
@@ -101,19 +101,19 @@ As definições de produto e arquitetura de software estão detalhadas nos segui
 ## RA8 - Engenharia de Software Assistida por IA
 **Competência:** Atuação como Arquiteto de Software utilizando **Spec-Driven Development (SDD)** e orquestração de agentes.
 
-- [X] **ID28:** Gestão Ágil: User Stories e Kanban gerados/geridos com apoio de IA.
-- [X] **ID29:** Documentação de Fundações: Diagramas Mermaid (ER) e PRD no README.
-- [X] **ID30:** Especificação Técnica: Geração de arquivos `.spec.md` antes do código.
-- [X] **ID31:** Orquestração: Configuração de servidores **MCP** e Skills de Angular 20+.
-- [X] **ID32:** Validação Técnica: Revisão de código e orientação de IA para Testes Unitários (`.spec.ts`).
+- [ ] **ID28:** Gestão Ágil: User Stories e Kanban gerados/geridos com apoio de IA.
+- [ ] **ID29:** Documentação de Fundações: Diagramas Mermaid (ER) e PRD no README.
+- [ ] **ID30:** Especificação Técnica: Geração de arquivos `.spec.md` antes do código.
+- [ ] **ID31:** Orquestração: Configuração de servidores **MCP** e Skills de Angular 20+.
+- [ ] **ID32:** Validação Técnica: Revisão de código e orientação de IA para Testes Unitários (`.spec.ts`).
 
 -------------------------------------------------------------
 ## 💻 Instruções de Execução
 
 1. **Clone o repositório:**
 ```bash
-git clone https://github.com/mariagued/gift-hub.git
-cd gift-hub
+git clone [URL_DO_SEU_REPOSITORIO]
+cd [NOME_DA_PASTA]
 ```
 
 2. **Instale as dependências:**

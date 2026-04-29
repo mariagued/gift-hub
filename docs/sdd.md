@@ -24,7 +24,10 @@ O projeto utiliza uma arquitetura de Monorepo. O Agente de IA deve respeitar a s
 * **Stitch MCP (Google):** Utilizado para a geração e prototipação de interfaces Angular. Consulte este contexto para garantir que os componentes sigam os padrões visuais e funcionais definidos no Stitch.
 
 ## 📦 3. Stack Tecnológica e Bibliotecas
-> Definição estrita das tecnologias permitidas. Nenhuma dependência externa deve ser instalada sem refletir aqui.
+### 🎨 Interface & Design System
+* **Framework:** Tailwind CSS v3.x.
+* **Component Library:** **DaisyUI v5.x** (Opção A).
+* **Justificativa da Escolha:** A DaisyUI foi selecionada para este projeto devido à sua arquitetura baseada em classes semânticas, o que acelera drasticamente a prototipagem. Diferente de outras bibliotecas, ela permite a customização profunda dos Design Tokens diretamente no `tailwind.config.js`. Isso possibilitou a implementação fiel da estratégia visual "Curated Celebration", garantindo que componentes como botões e cards sigam rigorosamente a paleta violeta e o raio de arredondamento pílula definidos no protótipo do Stitch, sem inflar o bundle final da aplicação.
 
 ### Core & Infraestrutura
 * **Ambiente:** Node.js v20.x LTS.
@@ -33,7 +36,6 @@ O projeto utiliza uma arquitetura de Monorepo. O Agente de IA deve respeitar a s
 * **Frontend:** Angular v17+ (Obrigatório o uso da nova Control Flow `@if`, `@for` e configuração estrita com `Standalone Components`. O uso de `NgModule` está proibido).
 * **ORM:** Prisma v5.x (Interface oficial com o banco de dados).
 * **Testes:** `jest` e `supertest` (Obrigatório seguir o padrão oficial do NestJS para testes unitários e E2E. Proibido o uso de Vitest, Mocha ou qualquer outro test runner).
-* **UI/UX:** `DaisyUI` (A equipe optou por utilizar o DaisyUI em conjunto com o Tailwind CSS. A justificativa baseia-se no "Foco em Velocidade", uma vez que a biblioteca provê componentes semânticos pré-construídos que aceleram a prototipação, mantendo o HTML limpo e permitindo fácil customização via Design Tokens no tailwind.config.js).
 
 ### Bibliotecas e Utilitários Permitidos
 * **WebSockets:** Socket.io v4.x (integrado via `@nestjs/platform-socket.io` v10.x).
@@ -60,50 +62,40 @@ O projeto utiliza uma arquitetura de Monorepo. O Agente de IA deve respeitar a s
 
 ```mermaid
 erDiagram
-    COURSE ||--o{ ENROLLMENT : "possui pauta de"
-    USER ||--o{ ENROLLMENT : "matriculado em"
-    USER ||--o{ ATTENDANCE : "realiza"
-    COURSE ||--o{ SESSION : "possui"
-    SESSION ||--o{ ATTENDANCE : "contém"
+    GROUP ||--o{ PARTICIPANT : "possui"
+    USER ||--o{ PARTICIPANT : "torna-se"
+    USER ||--o{ WISH : "cadastra"
+    GROUP ||--o{ DRAW : "gera"
+    DRAW ||--o{ PAIR : "contém"
 
     USER {
         string id PK
-        string email UK "E-mail validado via Pauta"
+        string email UK
         string name
-        string ra UK "Registro Acadêmico (Importado)"
-        string role "PROFESSOR | STUDENT | ADMIN"
-        datetime createdAt
+        string avatarUrl
     }
 
-    COURSE {
+    GROUP {
         string id PK
-        string name
-        string code "Ex: TSI32B"
-        string professorId FK
+        string name "Ex: Amigo Secreto Família"
+        datetime eventDate
+        float budgetLimit
     }
 
-    ENROLLMENT {
+    PARTICIPANT {
         string id PK
-        string courseId FK
-        string studentEmail "Usado para pré-cadastro antes do aluno logar"
-        string studentId FK "Nulo até o aluno logar pela 1ª vez"
+        string groupId FK
+        string userId FK
+        string role "ADMIN | MEMBER"
     }
 
-    SESSION {
+    WISH {
         string id PK
-        string courseId FK
-        datetime startTime
-        datetime endTime
-        boolean isActive
+        string userId FK
+        string description "O que eu quero ganhar"
+        string link "Link do produto"
     }
-
-    ATTENDANCE {
-        string id PK
-        string sessionId FK
-        string studentId FK
-        datetime timestamp
-        boolean isManual "True se inserido pelo Prof (US08)"
-    }
+    
 ```
 
 ## 📑 5. Contratos Globais (DTOs & Interfaces)
@@ -112,6 +104,13 @@ erDiagram
 * **AuthDTO:** `{ idToken: string }` -> Retorna Token JWT + Perfil do Usuário.
 * **CreateSessionDTO:** `{ courseId: string, durationMinutes: number }` (Exclusivo Professor).
 * **CheckInDTO:** `{ qrToken: string }` -> O `qrToken` é um JWT assinado com validade de 15 segundos.
+
+### 📂 5.1. Estrutura de Pastas Global (Workspace)
+O projeto utiliza uma estrutura de Monorepo para separar a documentação, o backend (futuro) e o frontend.
+
+* **`docs/`**: Documentação oficial do projeto (PRD, SDD, manuais).
+* **`apps/api/`**: Reservado para o Backend/Servidor (Node/Supabase Edge Functions).
+* **`apps/web/`**: Aplicação Frontend principal (Angular + Tailwind).
 
 
 ## 🏗️ 6. Scaffolding Macro (Arquitetura Backend)

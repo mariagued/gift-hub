@@ -4,7 +4,8 @@
     "description": "Monorepo do projeto da disciplina",
     "private": true,
     "workspaces": [
-        "apps/*"
+        "apps/*",
+        "packages/*"
     ],
     "scripts": {
         "dev:api": "npm run start:dev -w apps/api",
