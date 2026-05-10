@@ -12,7 +12,7 @@
 O projeto utiliza uma arquitetura de Monorepo. O Agente de IA deve respeitar a seguinte estrutura de pastas:
 
 * **`apps/api`**: Servidor Backend (NestJS). 
-* **`apps/web`**: Aplicação Client (Angular 17+). 
+* **`apps/web`**: Aplicação Client (Angular v20.x). 
 * **`apps/extension`**: Vanilla TypeScript para manipulação de DOM.
 
 
@@ -25,15 +25,15 @@ O projeto utiliza uma arquitetura de Monorepo. O Agente de IA deve respeitar a s
 
 ## 📦 3. Stack Tecnológica e Bibliotecas
 ### 🎨 Interface & Design System
-* **Framework:** Tailwind CSS v3.x.
-* **Component Library:** **DaisyUI v5.x** (Opção A).
+* **Framework:** Tailwind CSS v3.4.x.
+* **Component Library:** **DaisyUI v5.5.x** (Opção A).
 * **Justificativa da Escolha:** A DaisyUI foi selecionada para este projeto devido à sua arquitetura baseada em classes semânticas, o que acelera drasticamente a prototipagem. Diferente de outras bibliotecas, ela permite a customização profunda dos Design Tokens diretamente no `tailwind.config.js`. Isso possibilitou a implementação fiel da estratégia visual "Curated Celebration", garantindo que componentes como botões e cards sigam rigorosamente a paleta violeta e o raio de arredondamento pílula definidos no protótipo do Stitch, sem inflar o bundle final da aplicação.
 
 ### Core & Infraestrutura
-* **Ambiente:** Node.js v20.x LTS.
+* **Ambiente:** Node.js v24.x LTS.
 * **Banco de Dados:** PostgreSQL 16 (Hospedado no Neon.tech).
 * **Backend:** NestJS v10.x.
-* **Frontend:** Angular v17+ (Obrigatório o uso da nova Control Flow `@if`, `@for` e configuração estrita com `Standalone Components`. O uso de `NgModule` está proibido).
+* **Frontend:** Angular v20.x (Obrigatório o uso da nova Control Flow `@if`, `@for` e configuração estrita com `Standalone Components`. O uso de `NgModule` está proibido).
 * **ORM:** Prisma v5.x (Interface oficial com o banco de dados).
 * **Testes:** `jest` e `supertest` (Obrigatório seguir o padrão oficial do NestJS para testes unitários e E2E. Proibido o uso de Vitest, Mocha ou qualquer outro test runner).
 
