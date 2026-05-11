@@ -34,15 +34,49 @@ O projeto utiliza uma arquitetura de Monorepo. O Agente de IA deve respeitar a s
 * **Banco de Dados:** PostgreSQL 16 (Hospedado no Neon.tech).
 * **Backend:** NestJS v10.x.
 * **Frontend:** Angular v17+ (Obrigatório o uso da nova Control Flow `@if`, `@for` e configuração estrita com `Standalone Components`. O uso de `NgModule` está proibido).
+* **Styling:** TailwindCSS v4.
 * **ORM:** Prisma v5.x (Interface oficial com o banco de dados).
 * **Testes:** `jest` e `supertest` (Obrigatório seguir o padrão oficial do NestJS para testes unitários e E2E. Proibido o uso de Vitest, Mocha ou qualquer outro test runner).
 
+### 🧪 Estratégia de Testes (Unificada com Jest)
+
+O projeto adota o **Jest** como ferramenta única de testes para garantir consistência entre as camadas.
+
+#### 🖥️ Backend (NestJS)
+
+* **Unitários:** Foco em Services e Business Logic.
+* **E2E (End-to-End):** Uso obrigatório de `supertest` para validar rotas e integração com Prisma/PostgreSQL.
+* **Runner:** Jest nativo do NestJS.
+
+#### 🌐 Frontend (Angular)
+
+* **Unitários/Lógica:** Foco em Signals, Services de API e transformações de dados.
+* **Component Testing:** Uso de `TestBed` com `jest-preset-angular`.
+* **Atenção:** Proibido o uso de Karma/Jasmine ou Vitest.
+
+### UI & Estilização (Frontend)
+
+* **Design System:** DaisyUI.
+* **CSS Framework:** Tailwind CSS v4.
+* **State Management:** Angular Signals.
+
 ### Bibliotecas e Utilitários Permitidos
+* **State Management:** Angular Signals.
 * **WebSockets:** Socket.io v4.x (integrado via `@nestjs/platform-socket.io` v10.x).
 * **Auth:** Passport.js + JWT (`@nestjs/jwt` e `@nestjs/passport`) para sessões seguras.
 * **Validação:** `class-validator` e `class-transformer` (Obrigatório para os Pipes globais de validação de DTOs).
 * **Documentação:** `@nestjs/swagger` (OpenAPI 3.0 para os contratos de API).
 * **Utilitários:** `date-fns` (Para a lógica rigorosa de expiração do QR Code em 15s).
+
+### 📚 Referências Técnicas e Instalação
+
+> **Regra de Ouro:** O Agente DEVE consultar estas docs antes de executar comandos de scaffolding.
+
+* https://angular.dev/guide/tailwind
+* https://angular.dev/overview
+* https://docs.nestjs.com/
+* https://www.prisma.io/docs/postgres
+* https://daisyui.com/docs/install/
 
 
 ## 🗄️ 4. Arquitetura de Dados
@@ -132,6 +166,24 @@ O projeto utiliza uma estrutura de Monorepo para separar a documentação, o bac
 | `AuthService` | Validar e-mail institucional e emitir Tokens de Acesso. |
 | `QrTokenService` | Assinar e verificar tokens JWT efêmeros para o QR Code (Segurança). |
 
+### 📂 6.3. Estrutura de Diretórios Frontend (Angular)
+
+### 📂 6.3. Estrutura de Diretórios Frontend (Angular)
+
+> **Instrução para a IA:** A estrutura abaixo define os domínios e suas responsabilidades. É proibido criar pastas por tipo técnico (`components/`, `services/`) na raiz do `app/`. Todos os componentes são **Standalone** — o uso de `NgModule` é proibido.
+
+| Pasta | Responsabilidade |
+| :--- | :--- |
+| `core/` | Singletons instanciados uma única vez no bootstrap: Guards, Interceptors, Providers globais e serviços de autenticação |
+| `shared/` | Componentes reutilizáveis desacoplados de regra de negócio, pipes, diretivas e utilitários visuais |
+| `features/auth/` | Login, cadastro, persistência do JWT e gerenciamento da sessão do usuário |
+| `features/dashboard/` | Painel principal com visão geral de eventos, convites e atividades recentes |
+| `features/events/` | Criação, edição e gerenciamento dos eventos de amigo secreto |
+| `features/participants/` | Convites, gerenciamento de participantes e confirmação de presença no evento |
+| `features/draw/` | Execução do sorteio, visualização do amigo secreto e regras de pareamento |
+| `features/gifts/` | Lista de desejos, sugestões de presentes e definição de orçamento |
+| `features/profile/` | Perfil do usuário, preferências pessoais e configurações da conta |
+
 
 ## 🛡️ 7. Segurança (API Protection)
 > Políticas de acesso e integridade dos dados no nível do servidor.
@@ -189,3 +241,41 @@ As seguintes variáveis são o contrato obrigatório para o arquivo `.env`:
 * `QR_SECRET` = Chave isolada e exclusiva para assinar o token efêmero do QR Code.
 * `GOOGLE_CLIENT_ID` = ID do Client OAuth para validação segura do token de login.
 
+### 9.2. Frontend (Angular)
+
+Utilize a estrutura nativa de `environments` do Angular.
+
+* Nenhum Service Angular pode ter URLs hardcoded.
+
+**Contrato Base de Variáveis (Angular):**
+
+* `apiUrl` = Base URL do Backend NestJS.
+* `googleClientId` = Client público do OAuth.
+
+## 🤖 10. Compliance com Workflows Antigravity
+
+> **Instrução para a IA:** Antes de qualquer alteração estrutural no monorepo ou no frontend, executar obrigatoriamente os workflows abaixo.
+
+### `/monorepo-workflow`
+
+Deve validar:
+
+* Existência de `apps/`
+* Existência de `libs/`
+* Existência de `specs/`
+* Existência de `docs/`
+* `package.json` configurado com `workspaces`
+
+### `/angular-workflow`
+
+Deve validar:
+
+* Angular v20+
+* TailwindCSS v4
+* DaisyUI instalado
+* Uso de Standalone Components
+* Uso de Control Flow (`@if`, `@for`)
+* Existência de `core/`
+* Existência de `shared/`
+* Existência de `features/`
+* Paridade com `docs/sdd.md`

@@ -5,7 +5,7 @@
     "private": true,
     "workspaces": [
         "apps/*",
-        "packages/*"
+        "libs/*"
     ],
     "scripts": {
         "dev:api": "npm run start:dev -w apps/api",
