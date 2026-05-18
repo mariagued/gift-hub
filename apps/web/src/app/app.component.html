@@ -1,0 +1,23 @@
+<div class="drawer">
+  <input id="app-drawer" type="checkbox" class="drawer-toggle" />
+  
+  <div class="drawer-content min-h-screen flex flex-col bg-slate-50">
+    <!-- Header/Navbar -->
+    <app-header></app-header>
+    
+    <!-- Main Content -->
+    <main class="flex-grow">
+      <router-outlet />
+    </main>
+    
+    <!-- Footer -->
+    <app-footer></app-footer>
+  </div>
+  
+  <!-- Adicionado lg:hidden para esconder a Sidenav no Desktop -->
+  <div class="drawer-side z-50 lg:hidden">
+    <label for="app-drawer" aria-label="close sidebar" class="drawer-overlay"></label>
+    <!-- Tornando a largura fluída no mobile e o fundo correto -->
+    <app-sidenav class="block w-[80vw] max-w-[320px] min-h-full bg-base-100 border-r border-slate-200"></app-sidenav>
+  </div>
+</div>
