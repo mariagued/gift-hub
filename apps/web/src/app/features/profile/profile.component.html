@@ -1,0 +1,23 @@
+<div class="p-4 bg-base-100 rounded-box shadow-md flex flex-col items-center gap-2">
+  <div class="avatar placeholder">
+    <div class="bg-neutral text-neutral-content rounded-full w-16">
+      <span class="text-xl">
+        @if (userName) {
+          {{ userName.charAt(0).toUpperCase() }}
+        } @else {
+          ?
+        }
+      </span>
+    </div>
+  </div>
+
+  <div class="text-center">
+    @if (userName) {
+      <!-- Usuário logado: Nome azul usando TailwindCSS -->
+      <h2 class="text-lg font-bold text-blue-500">{{ userName }}</h2>
+    } @else {
+      <!-- Estado deslogado / Convidado -->
+      <h2 class="text-lg font-medium text-base-content/70">Usuário não identificado</h2>
+    }
+  </div>
+</div>
