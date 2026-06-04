@@ -81,9 +81,15 @@ import { RouterLink } from '@angular/router';
                 </div>
               </div>
 
-              <a [routerLink]="['/groups', group.id]" class="relative z-10 block w-full text-center py-3.5 rounded-xl border-2 border-purple-100 text-purple-700 font-bold hover:bg-purple-600 hover:text-white hover:border-purple-600 transition-all focus:outline-none">
-                Acessar Grupo
-              </a>
+              @if (group.status === 'Ativo') {
+                <a [routerLink]="['/groups', group.id, 'revelacao']" class="relative z-10 block w-full text-center py-3.5 rounded-xl border-2 border-purple-600 bg-purple-600 text-white font-bold hover:bg-purple-700 hover:border-purple-700 transition-all focus:outline-none shadow-md hover:shadow-lg">
+                  Ver Sorteio
+                </a>
+              } @else {
+                <a [routerLink]="['/groups', group.id]" class="relative z-10 block w-full text-center py-3.5 rounded-xl border-2 border-purple-100 text-purple-700 font-bold hover:bg-purple-600 hover:text-white hover:border-purple-600 transition-all focus:outline-none">
+                  Acessar Grupo
+                </a>
+              }
             </div>
           }
         </div>
