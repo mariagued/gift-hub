@@ -1,3 +1,12 @@
 import { Routes } from '@angular/router';
 
-export const routes: Routes = [];
+export const routes: Routes = [
+  { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+  { path: 'dashboard', loadComponent: () => import('./features/dashboard/dashboard.component').then(m => m.DashboardComponent) },
+  { path: 'como-funciona', loadComponent: () => import('./features/dashboard/como-funciona.component').then(m => m.ComoFuncionaComponent) },
+  { path: 'groups', loadComponent: () => import('./features/groups/groups.component').then(m => m.GroupsComponent) },
+  { path: 'groups/new', loadComponent: () => import('./features/groups/create-group.component').then(m => m.CreateGroupComponent) },
+  { path: 'groups/:id', loadComponent: () => import('./features/groups/group-details.component').then(m => m.GroupDetailsComponent) },
+  { path: 'groups/:id/revelacao', loadComponent: () => import('./features/groups/revelation.component').then(m => m.RevelationComponent) },
+  { path: 'profile', loadComponent: () => import('./features/profile/profile.component').then(m => m.ProfileComponent) }
+];
