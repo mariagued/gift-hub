@@ -5,13 +5,11 @@ import { filter } from 'rxjs/operators';
 import { HeaderComponent } from './core/layout/header/header.component';
 import { SidenavComponent } from './core/layout/sidenav/sidenav.component';
 import { FooterComponent } from './core/layout/footer/footer.component';
-import { UserProfileComponent } from './user-profile/user-profile.component';
-
 @Component({
   selector: 'app-root',
   standalone: true,
   templateUrl: './app.component.html',
-  imports: [RouterOutlet, RouterLink, RouterLinkActive, HeaderComponent, SidenavComponent, FooterComponent, UserProfileComponent]
+  imports: [RouterOutlet, RouterLink, RouterLinkActive, HeaderComponent, SidenavComponent, FooterComponent]
 })
 export class AppComponent {
   showLayout = true;
