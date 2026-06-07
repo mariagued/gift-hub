@@ -1,0 +1,17 @@
+{
+  "groups": [
+    {
+      "id": "g1",
+      "name": "Família 2024",
+      "drawDate": "2024-12-20",
+      "budgetLimit": 100,
+      "status": "Pendente"
+    }
+  ],
+  "participants": [
+    { "id": "u1", "name": "Alice", "email": "alice@example.com", "groupId": "g1" },
+    { "id": "u2", "name": "Bob",   "email": "bob@example.com",   "groupId": "g1" },
+    { "id": "u3", "name": "Carol", "email": "carol@example.com", "groupId": "g1" }
+  ],
+  "matches": []
+}
