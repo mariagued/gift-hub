@@ -12,7 +12,7 @@ export class LoginComponent {
 
   onLogin(event: Event) {
     event.preventDefault();
-    // For demonstration, navigate directly to home
-    this.router.navigate(['/home']);
+    // For demonstration, navigate directly to dashboard
+    this.router.navigate(['/dashboard']);
   }
 }
