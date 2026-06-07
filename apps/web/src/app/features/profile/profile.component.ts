@@ -1,10 +1,11 @@
 import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink],
   template: `
     <div class="max-w-3xl mx-auto space-y-6">
       
@@ -99,9 +100,9 @@ import { CommonModule } from '@angular/common';
       </div>
 
       <!-- Logout -->
-      <button class="w-full bg-white text-red-600 font-bold py-4 rounded-3xl shadow-sm border border-red-100 hover:bg-red-50 transition-colors">
+      <a routerLink="/login" class="w-full inline-block text-center bg-white text-red-600 font-bold py-4 rounded-3xl shadow-sm border border-red-100 hover:bg-red-50 transition-colors cursor-pointer">
         Sair da conta
-      </button>
+      </a>
 
     </div>
   `
