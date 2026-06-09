@@ -9,7 +9,8 @@
     ],
     "scripts": {
         "dev:api": "npm run start:dev -w apps/api",
-        "dev:web": "npm run start -w apps/web"
+        "dev:web": "npm run start -w apps/web",
+        "json-server": "json-server --watch apps/web/db.json --port 3000"
     },
     "keywords": [
         "angular",
@@ -19,6 +20,7 @@
     "author": "Turma de Desenvolvimento Web",
     "license": "UNLICENSED",
     "devDependencies": {
-        "daisyui": "^5.5.19"
+        "daisyui": "^5.5.19",
+        "json-server": "^1.0.0-beta.15"
     }
 }

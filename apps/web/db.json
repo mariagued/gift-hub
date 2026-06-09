@@ -1,0 +1,1041 @@
+{
+  "groups": [
+    {
+      "name": "Natal",
+      "drawDate": "2026-06-19",
+      "budgetLimit": 877324,
+      "status": "Pendente",
+      "id": "9ZRiNeXfN-k"
+    },
+    {
+      "name": "Trabalho",
+      "drawDate": "2026-06-16",
+      "budgetLimit": null,
+      "status": "Pendente",
+      "id": "qJ5ag9tbBn4"
+    },
+    {
+      "name": "teste",
+      "drawDate": "2026-06-25",
+      "budgetLimit": 1000,
+      "status": "Pendente",
+      "id": "Tm-Jy7Lz2BY"
+    }
+  ],
+  "participants": [
+    {
+      "id": "u1",
+      "name": "Alice",
+      "email": "alice@example.com",
+      "groupId": null
+    },
+    {
+      "id": "u2",
+      "name": "Bob",
+      "email": "bob@example.com",
+      "groupId": null
+    },
+    {
+      "id": "u3",
+      "name": "Carol",
+      "email": "carol@example.com",
+      "groupId": null
+    },
+    {
+      "id": "3oUWzUCeWuo",
+      "name": "Daniel",
+      "email": "daniel@example.com",
+      "groupId": null
+    },
+    {
+      "id": "o6kFYt1Nclg",
+      "name": "Abe",
+      "email": "ahs@sada.com",
+      "groupId": "9ZRiNeXfN-k"
+    },
+    {
+      "id": "9UvRD8pjMXY",
+      "name": "jskhd",
+      "groupId": null
+    },
+    {
+      "id": "jr-jMuY-88w",
+      "name": "1",
+      "groupId": "9ZRiNeXfN-k"
+    },
+    {
+      "id": "2YcL5OLJ8KQ",
+      "name": "75",
+      "groupId": "9ZRiNeXfN-k"
+    },
+    {
+      "id": "rMsHSx4TZRs",
+      "name": "hh",
+      "groupId": "9ZRiNeXfN-k"
+    },
+    {
+      "id": "NmDlGjhFQF4",
+      "name": "sasa",
+      "groupId": "1"
+    },
+    {
+      "id": "N2EYdBnapnE",
+      "name": "ane",
+      "groupId": "1"
+    },
+    {
+      "id": "_aQe9YnHJSY",
+      "name": "lulu",
+      "groupId": "1"
+    },
+    {
+      "id": "ofywTueIwuE",
+      "name": "ma",
+      "groupId": "1"
+    },
+    {
+      "id": "y7Wbr8VSfvQ",
+      "name": "mu",
+      "groupId": "1"
+    },
+    {
+      "id": "HSYo5RRm8Xg",
+      "name": "Ane",
+      "groupId": "qJ5ag9tbBn4"
+    },
+    {
+      "id": "wFaAT1KMUfI",
+      "name": "Maria",
+      "groupId": "qJ5ag9tbBn4"
+    },
+    {
+      "id": "tQ2Wzzz1yZ0",
+      "name": "Mery",
+      "groupId": "qJ5ag9tbBn4"
+    },
+    {
+      "id": "nX0qXH2rUSc",
+      "name": "ANE",
+      "groupId": "Tm-Jy7Lz2BY"
+    },
+    {
+      "id": "pUDC-IUVFug",
+      "name": "23",
+      "groupId": "Tm-Jy7Lz2BY"
+    },
+    {
+      "id": "_osuJtv63FQ",
+      "name": "21",
+      "groupId": "Tm-Jy7Lz2BY"
+    },
+    {
+      "id": "7LN5-Gg1U14",
+      "name": "33",
+      "groupId": "Tm-Jy7Lz2BY"
+    },
+    {
+      "id": "QJ19rltRzFo",
+      "name": "44",
+      "groupId": "Tm-Jy7Lz2BY"
+    }
+  ],
+  "matches": [
+    {
+      "id": "7tlm5_YgUSA",
+      "groupId": null,
+      "giver": {
+        "id": "u3",
+        "name": "Carol",
+        "email": "carol@example.com",
+        "groupId": "g1"
+      },
+      "receiver": {
+        "id": "3oUWzUCeWuo",
+        "name": "Daniel",
+        "email": "daniel@example.com",
+        "groupId": "g1"
+      }
+    },
+    {
+      "id": "4zojgQEPXJY",
+      "groupId": null,
+      "giver": {
+        "id": "3oUWzUCeWuo",
+        "name": "Daniel",
+        "email": "daniel@example.com",
+        "groupId": "g1"
+      },
+      "receiver": {
+        "id": "u2",
+        "name": "Bob",
+        "email": "bob@example.com",
+        "groupId": "g1"
+      }
+    },
+    {
+      "id": "9E98nKptqhQ",
+      "groupId": null,
+      "giver": {
+        "id": "u2",
+        "name": "Bob",
+        "email": "bob@example.com",
+        "groupId": "g1"
+      },
+      "receiver": {
+        "id": "u1",
+        "name": "Alice",
+        "email": "alice@example.com",
+        "groupId": "g1"
+      }
+    },
+    {
+      "id": "0b03EA_rALw",
+      "groupId": null,
+      "giver": {
+        "id": "u1",
+        "name": "Alice",
+        "email": "alice@example.com",
+        "groupId": "g1"
+      },
+      "receiver": {
+        "id": "u3",
+        "name": "Carol",
+        "email": "carol@example.com",
+        "groupId": "g1"
+      }
+    },
+    {
+      "id": "Nqm48Zah-Z4",
+      "groupId": "9ZRiNeXfN-k",
+      "giver": {
+        "id": "2YcL5OLJ8KQ",
+        "name": "75",
+        "groupId": "9ZRiNeXfN-k"
+      },
+      "receiver": {
+        "id": "o6kFYt1Nclg",
+        "name": "Abe",
+        "email": "ahs@sada.com",
+        "groupId": "9ZRiNeXfN-k"
+      }
+    },
+    {
+      "id": "6wG1vLNy8wA",
+      "groupId": "9ZRiNeXfN-k",
+      "giver": {
+        "id": "o6kFYt1Nclg",
+        "name": "Abe",
+        "email": "ahs@sada.com",
+        "groupId": "9ZRiNeXfN-k"
+      },
+      "receiver": {
+        "id": "jr-jMuY-88w",
+        "name": "1",
+        "groupId": "9ZRiNeXfN-k"
+      }
+    },
+    {
+      "id": "by2DMeqlaHk",
+      "groupId": "9ZRiNeXfN-k",
+      "giver": {
+        "id": "jr-jMuY-88w",
+        "name": "1",
+        "groupId": "9ZRiNeXfN-k"
+      },
+      "receiver": {
+        "id": "rMsHSx4TZRs",
+        "name": "hh",
+        "groupId": "9ZRiNeXfN-k"
+      }
+    },
+    {
+      "id": "pc5Kb2pS4js",
+      "groupId": "9ZRiNeXfN-k",
+      "giver": {
+        "id": "rMsHSx4TZRs",
+        "name": "hh",
+        "groupId": "9ZRiNeXfN-k"
+      },
+      "receiver": {
+        "id": "2YcL5OLJ8KQ",
+        "name": "75",
+        "groupId": "9ZRiNeXfN-k"
+      }
+    },
+    {
+      "id": "B3AW6DOz0C4",
+      "groupId": "1",
+      "giver": {
+        "id": "N2EYdBnapnE",
+        "name": "ane",
+        "groupId": "1"
+      },
+      "receiver": {
+        "id": "ofywTueIwuE",
+        "name": "ma",
+        "groupId": "1"
+      }
+    },
+    {
+      "id": "6qwiPSYny3w",
+      "groupId": "1",
+      "giver": {
+        "id": "ofywTueIwuE",
+        "name": "ma",
+        "groupId": "1"
+      },
+      "receiver": {
+        "id": "NmDlGjhFQF4",
+        "name": "sasa",
+        "groupId": "1"
+      }
+    },
+    {
+      "id": "YRfkciW85qk",
+      "groupId": "1",
+      "giver": {
+        "id": "NmDlGjhFQF4",
+        "name": "sasa",
+        "groupId": "1"
+      },
+      "receiver": {
+        "id": "y7Wbr8VSfvQ",
+        "name": "mu",
+        "groupId": "1"
+      }
+    },
+    {
+      "id": "33TlsgC6ZNI",
+      "groupId": "1",
+      "giver": {
+        "id": "y7Wbr8VSfvQ",
+        "name": "mu",
+        "groupId": "1"
+      },
+      "receiver": {
+        "id": "_aQe9YnHJSY",
+        "name": "lulu",
+        "groupId": "1"
+      }
+    },
+    {
+      "id": "T44zO8loDN8",
+      "groupId": "1",
+      "giver": {
+        "id": "_aQe9YnHJSY",
+        "name": "lulu",
+        "groupId": "1"
+      },
+      "receiver": {
+        "id": "N2EYdBnapnE",
+        "name": "ane",
+        "groupId": "1"
+      }
+    },
+    {
+      "id": "3L3ZDcR7s1Y",
+      "groupId": "1",
+      "giver": {
+        "id": "ofywTueIwuE",
+        "name": "ma",
+        "groupId": "1"
+      },
+      "receiver": {
+        "id": "N2EYdBnapnE",
+        "name": "ane",
+        "groupId": "1"
+      }
+    },
+    {
+      "id": "HZZI9tLc5y8",
+      "groupId": "1",
+      "giver": {
+        "id": "N2EYdBnapnE",
+        "name": "ane",
+        "groupId": "1"
+      },
+      "receiver": {
+        "id": "_aQe9YnHJSY",
+        "name": "lulu",
+        "groupId": "1"
+      }
+    },
+    {
+      "id": "D3aXQSDfCWI",
+      "groupId": "1",
+      "giver": {
+        "id": "_aQe9YnHJSY",
+        "name": "lulu",
+        "groupId": "1"
+      },
+      "receiver": {
+        "id": "y7Wbr8VSfvQ",
+        "name": "mu",
+        "groupId": "1"
+      }
+    },
+    {
+      "id": "TSABF_E4hEc",
+      "groupId": "1",
+      "giver": {
+        "id": "y7Wbr8VSfvQ",
+        "name": "mu",
+        "groupId": "1"
+      },
+      "receiver": {
+        "id": "NmDlGjhFQF4",
+        "name": "sasa",
+        "groupId": "1"
+      }
+    },
+    {
+      "id": "c0I4-LRYsxA",
+      "groupId": "1",
+      "giver": {
+        "id": "NmDlGjhFQF4",
+        "name": "sasa",
+        "groupId": "1"
+      },
+      "receiver": {
+        "id": "ofywTueIwuE",
+        "name": "ma",
+        "groupId": "1"
+      }
+    },
+    {
+      "id": "0QzUhmMJrfs",
+      "groupId": "1",
+      "giver": {
+        "id": "ofywTueIwuE",
+        "name": "ma",
+        "groupId": "1"
+      },
+      "receiver": {
+        "id": "_aQe9YnHJSY",
+        "name": "lulu",
+        "groupId": "1"
+      }
+    },
+    {
+      "id": "MzNgJ-IUI_Y",
+      "groupId": "1",
+      "giver": {
+        "id": "_aQe9YnHJSY",
+        "name": "lulu",
+        "groupId": "1"
+      },
+      "receiver": {
+        "id": "N2EYdBnapnE",
+        "name": "ane",
+        "groupId": "1"
+      }
+    },
+    {
+      "id": "4KGPGtwVnmY",
+      "groupId": "1",
+      "giver": {
+        "id": "N2EYdBnapnE",
+        "name": "ane",
+        "groupId": "1"
+      },
+      "receiver": {
+        "id": "NmDlGjhFQF4",
+        "name": "sasa",
+        "groupId": "1"
+      }
+    },
+    {
+      "id": "8bc326x_M-E",
+      "groupId": "1",
+      "giver": {
+        "id": "NmDlGjhFQF4",
+        "name": "sasa",
+        "groupId": "1"
+      },
+      "receiver": {
+        "id": "y7Wbr8VSfvQ",
+        "name": "mu",
+        "groupId": "1"
+      }
+    },
+    {
+      "id": "EXpTmUZxvnc",
+      "groupId": "1",
+      "giver": {
+        "id": "y7Wbr8VSfvQ",
+        "name": "mu",
+        "groupId": "1"
+      },
+      "receiver": {
+        "id": "ofywTueIwuE",
+        "name": "ma",
+        "groupId": "1"
+      }
+    },
+    {
+      "id": "7q-ljOiUCAc",
+      "groupId": "1",
+      "giver": {
+        "id": "_aQe9YnHJSY",
+        "name": "lulu",
+        "groupId": "1"
+      },
+      "receiver": {
+        "id": "N2EYdBnapnE",
+        "name": "ane",
+        "groupId": "1"
+      }
+    },
+    {
+      "id": "2g4xT-nDMqQ",
+      "groupId": "1",
+      "giver": {
+        "id": "N2EYdBnapnE",
+        "name": "ane",
+        "groupId": "1"
+      },
+      "receiver": {
+        "id": "NmDlGjhFQF4",
+        "name": "sasa",
+        "groupId": "1"
+      }
+    },
+    {
+      "id": "-UF5APlBkP0",
+      "groupId": "1",
+      "giver": {
+        "id": "NmDlGjhFQF4",
+        "name": "sasa",
+        "groupId": "1"
+      },
+      "receiver": {
+        "id": "y7Wbr8VSfvQ",
+        "name": "mu",
+        "groupId": "1"
+      }
+    },
+    {
+      "id": "prt3dhxOdp4",
+      "groupId": "1",
+      "giver": {
+        "id": "y7Wbr8VSfvQ",
+        "name": "mu",
+        "groupId": "1"
+      },
+      "receiver": {
+        "id": "ofywTueIwuE",
+        "name": "ma",
+        "groupId": "1"
+      }
+    },
+    {
+      "id": "nXvqAn1xYJQ",
+      "groupId": "1",
+      "giver": {
+        "id": "ofywTueIwuE",
+        "name": "ma",
+        "groupId": "1"
+      },
+      "receiver": {
+        "id": "_aQe9YnHJSY",
+        "name": "lulu",
+        "groupId": "1"
+      }
+    },
+    {
+      "id": "hTuM9KU3NaI",
+      "groupId": "1",
+      "giver": {
+        "id": "NmDlGjhFQF4",
+        "name": "sasa",
+        "groupId": "1"
+      },
+      "receiver": {
+        "id": "y7Wbr8VSfvQ",
+        "name": "mu",
+        "groupId": "1"
+      }
+    },
+    {
+      "id": "CXlB0Roj4qw",
+      "groupId": "1",
+      "giver": {
+        "id": "y7Wbr8VSfvQ",
+        "name": "mu",
+        "groupId": "1"
+      },
+      "receiver": {
+        "id": "ofywTueIwuE",
+        "name": "ma",
+        "groupId": "1"
+      }
+    },
+    {
+      "id": "BRPe39eRfsQ",
+      "groupId": "1",
+      "giver": {
+        "id": "ofywTueIwuE",
+        "name": "ma",
+        "groupId": "1"
+      },
+      "receiver": {
+        "id": "_aQe9YnHJSY",
+        "name": "lulu",
+        "groupId": "1"
+      }
+    },
+    {
+      "id": "pUOXh4OTLZQ",
+      "groupId": "1",
+      "giver": {
+        "id": "_aQe9YnHJSY",
+        "name": "lulu",
+        "groupId": "1"
+      },
+      "receiver": {
+        "id": "N2EYdBnapnE",
+        "name": "ane",
+        "groupId": "1"
+      }
+    },
+    {
+      "id": "6i9pvZsZfec",
+      "groupId": "1",
+      "giver": {
+        "id": "N2EYdBnapnE",
+        "name": "ane",
+        "groupId": "1"
+      },
+      "receiver": {
+        "id": "NmDlGjhFQF4",
+        "name": "sasa",
+        "groupId": "1"
+      }
+    },
+    {
+      "id": "K9V9wPt3sGM",
+      "groupId": "1",
+      "giver": {
+        "id": "y7Wbr8VSfvQ",
+        "name": "mu",
+        "groupId": "1"
+      },
+      "receiver": {
+        "id": "_aQe9YnHJSY",
+        "name": "lulu",
+        "groupId": "1"
+      }
+    },
+    {
+      "id": "GiuvNrHlj3U",
+      "groupId": "1",
+      "giver": {
+        "id": "_aQe9YnHJSY",
+        "name": "lulu",
+        "groupId": "1"
+      },
+      "receiver": {
+        "id": "N2EYdBnapnE",
+        "name": "ane",
+        "groupId": "1"
+      }
+    },
+    {
+      "id": "oqQCs9U3F2A",
+      "groupId": "1",
+      "giver": {
+        "id": "N2EYdBnapnE",
+        "name": "ane",
+        "groupId": "1"
+      },
+      "receiver": {
+        "id": "NmDlGjhFQF4",
+        "name": "sasa",
+        "groupId": "1"
+      }
+    },
+    {
+      "id": "Xxet_tIfkaw",
+      "groupId": "1",
+      "giver": {
+        "id": "NmDlGjhFQF4",
+        "name": "sasa",
+        "groupId": "1"
+      },
+      "receiver": {
+        "id": "ofywTueIwuE",
+        "name": "ma",
+        "groupId": "1"
+      }
+    },
+    {
+      "id": "_5uH0KP5nlE",
+      "groupId": "1",
+      "giver": {
+        "id": "ofywTueIwuE",
+        "name": "ma",
+        "groupId": "1"
+      },
+      "receiver": {
+        "id": "y7Wbr8VSfvQ",
+        "name": "mu",
+        "groupId": "1"
+      }
+    },
+    {
+      "id": "b0ajD0jf6lU",
+      "groupId": "qJ5ag9tbBn4",
+      "giver": {
+        "id": "tQ2Wzzz1yZ0",
+        "name": "Mery",
+        "groupId": "qJ5ag9tbBn4"
+      },
+      "receiver": {
+        "id": "HSYo5RRm8Xg",
+        "name": "Ane",
+        "groupId": "qJ5ag9tbBn4"
+      }
+    },
+    {
+      "id": "480mQL61TfM",
+      "groupId": "qJ5ag9tbBn4",
+      "giver": {
+        "id": "HSYo5RRm8Xg",
+        "name": "Ane",
+        "groupId": "qJ5ag9tbBn4"
+      },
+      "receiver": {
+        "id": "wFaAT1KMUfI",
+        "name": "Maria",
+        "groupId": "qJ5ag9tbBn4"
+      }
+    },
+    {
+      "id": "Sp8VnEOzu5s",
+      "groupId": "qJ5ag9tbBn4",
+      "giver": {
+        "id": "wFaAT1KMUfI",
+        "name": "Maria",
+        "groupId": "qJ5ag9tbBn4"
+      },
+      "receiver": {
+        "id": "tQ2Wzzz1yZ0",
+        "name": "Mery",
+        "groupId": "qJ5ag9tbBn4"
+      }
+    },
+    {
+      "id": "CXZqBVmLrL4",
+      "groupId": "9ZRiNeXfN-k",
+      "giver": {
+        "id": "jr-jMuY-88w",
+        "name": "1",
+        "groupId": "9ZRiNeXfN-k"
+      },
+      "receiver": {
+        "id": "rMsHSx4TZRs",
+        "name": "hh",
+        "groupId": "9ZRiNeXfN-k"
+      }
+    },
+    {
+      "id": "lolFkwTcx-w",
+      "groupId": "9ZRiNeXfN-k",
+      "giver": {
+        "id": "rMsHSx4TZRs",
+        "name": "hh",
+        "groupId": "9ZRiNeXfN-k"
+      },
+      "receiver": {
+        "id": "2YcL5OLJ8KQ",
+        "name": "75",
+        "groupId": "9ZRiNeXfN-k"
+      }
+    },
+    {
+      "id": "pXFK2X8Fuj0",
+      "groupId": "9ZRiNeXfN-k",
+      "giver": {
+        "id": "2YcL5OLJ8KQ",
+        "name": "75",
+        "groupId": "9ZRiNeXfN-k"
+      },
+      "receiver": {
+        "id": "o6kFYt1Nclg",
+        "name": "Abe",
+        "email": "ahs@sada.com",
+        "groupId": "9ZRiNeXfN-k"
+      }
+    },
+    {
+      "id": "9ZzZop5gcFY",
+      "groupId": "9ZRiNeXfN-k",
+      "giver": {
+        "id": "o6kFYt1Nclg",
+        "name": "Abe",
+        "email": "ahs@sada.com",
+        "groupId": "9ZRiNeXfN-k"
+      },
+      "receiver": {
+        "id": "jr-jMuY-88w",
+        "name": "1",
+        "groupId": "9ZRiNeXfN-k"
+      }
+    },
+    {
+      "id": "yc75mN8fnJw",
+      "groupId": "qJ5ag9tbBn4",
+      "giver": {
+        "id": "wFaAT1KMUfI",
+        "name": "Maria",
+        "groupId": "qJ5ag9tbBn4"
+      },
+      "receiver": {
+        "id": "tQ2Wzzz1yZ0",
+        "name": "Mery",
+        "groupId": "qJ5ag9tbBn4"
+      }
+    },
+    {
+      "id": "pCnFqGrsPlc",
+      "groupId": "qJ5ag9tbBn4",
+      "giver": {
+        "id": "tQ2Wzzz1yZ0",
+        "name": "Mery",
+        "groupId": "qJ5ag9tbBn4"
+      },
+      "receiver": {
+        "id": "HSYo5RRm8Xg",
+        "name": "Ane",
+        "groupId": "qJ5ag9tbBn4"
+      }
+    },
+    {
+      "id": "rpzgVLOt7Mw",
+      "groupId": "qJ5ag9tbBn4",
+      "giver": {
+        "id": "HSYo5RRm8Xg",
+        "name": "Ane",
+        "groupId": "qJ5ag9tbBn4"
+      },
+      "receiver": {
+        "id": "wFaAT1KMUfI",
+        "name": "Maria",
+        "groupId": "qJ5ag9tbBn4"
+      }
+    },
+    {
+      "id": "xl-q5hnHpC8",
+      "groupId": "qJ5ag9tbBn4",
+      "giver": {
+        "id": "tQ2Wzzz1yZ0",
+        "name": "Mery",
+        "groupId": "qJ5ag9tbBn4"
+      },
+      "receiver": {
+        "id": "wFaAT1KMUfI",
+        "name": "Maria",
+        "groupId": "qJ5ag9tbBn4"
+      }
+    },
+    {
+      "id": "oKuvlLtFIr4",
+      "groupId": "qJ5ag9tbBn4",
+      "giver": {
+        "id": "wFaAT1KMUfI",
+        "name": "Maria",
+        "groupId": "qJ5ag9tbBn4"
+      },
+      "receiver": {
+        "id": "HSYo5RRm8Xg",
+        "name": "Ane",
+        "groupId": "qJ5ag9tbBn4"
+      }
+    },
+    {
+      "id": "pNUDdTcIEfU",
+      "groupId": "qJ5ag9tbBn4",
+      "giver": {
+        "id": "HSYo5RRm8Xg",
+        "name": "Ane",
+        "groupId": "qJ5ag9tbBn4"
+      },
+      "receiver": {
+        "id": "tQ2Wzzz1yZ0",
+        "name": "Mery",
+        "groupId": "qJ5ag9tbBn4"
+      }
+    },
+    {
+      "id": "LnjbUhNH9FQ",
+      "groupId": "qJ5ag9tbBn4",
+      "giver": {
+        "id": "tQ2Wzzz1yZ0",
+        "name": "Mery",
+        "groupId": "qJ5ag9tbBn4"
+      },
+      "receiver": {
+        "id": "wFaAT1KMUfI",
+        "name": "Maria",
+        "groupId": "qJ5ag9tbBn4"
+      }
+    },
+    {
+      "id": "M-wmKv5cjr0",
+      "groupId": "qJ5ag9tbBn4",
+      "giver": {
+        "id": "wFaAT1KMUfI",
+        "name": "Maria",
+        "groupId": "qJ5ag9tbBn4"
+      },
+      "receiver": {
+        "id": "HSYo5RRm8Xg",
+        "name": "Ane",
+        "groupId": "qJ5ag9tbBn4"
+      }
+    },
+    {
+      "id": "c8QSd_1Kxtg",
+      "groupId": "qJ5ag9tbBn4",
+      "giver": {
+        "id": "HSYo5RRm8Xg",
+        "name": "Ane",
+        "groupId": "qJ5ag9tbBn4"
+      },
+      "receiver": {
+        "id": "tQ2Wzzz1yZ0",
+        "name": "Mery",
+        "groupId": "qJ5ag9tbBn4"
+      }
+    },
+    {
+      "id": "U2Db3vh6MwU",
+      "groupId": "9ZRiNeXfN-k",
+      "giver": {
+        "id": "2YcL5OLJ8KQ",
+        "name": "75",
+        "groupId": "9ZRiNeXfN-k"
+      },
+      "receiver": {
+        "id": "jr-jMuY-88w",
+        "name": "1",
+        "groupId": "9ZRiNeXfN-k"
+      }
+    },
+    {
+      "id": "Tv-z1j9XJPk",
+      "groupId": "9ZRiNeXfN-k",
+      "giver": {
+        "id": "jr-jMuY-88w",
+        "name": "1",
+        "groupId": "9ZRiNeXfN-k"
+      },
+      "receiver": {
+        "id": "rMsHSx4TZRs",
+        "name": "hh",
+        "groupId": "9ZRiNeXfN-k"
+      }
+    },
+    {
+      "id": "FqOyKfE4EX8",
+      "groupId": "9ZRiNeXfN-k",
+      "giver": {
+        "id": "rMsHSx4TZRs",
+        "name": "hh",
+        "groupId": "9ZRiNeXfN-k"
+      },
+      "receiver": {
+        "id": "o6kFYt1Nclg",
+        "name": "Abe",
+        "email": "ahs@sada.com",
+        "groupId": "9ZRiNeXfN-k"
+      }
+    },
+    {
+      "id": "NiOOLiEHbQA",
+      "groupId": "9ZRiNeXfN-k",
+      "giver": {
+        "id": "o6kFYt1Nclg",
+        "name": "Abe",
+        "email": "ahs@sada.com",
+        "groupId": "9ZRiNeXfN-k"
+      },
+      "receiver": {
+        "id": "2YcL5OLJ8KQ",
+        "name": "75",
+        "groupId": "9ZRiNeXfN-k"
+      }
+    },
+    {
+      "id": "FjzdRWumt_U",
+      "groupId": "Tm-Jy7Lz2BY",
+      "giver": {
+        "id": "pUDC-IUVFug",
+        "name": "23",
+        "groupId": "Tm-Jy7Lz2BY"
+      },
+      "receiver": {
+        "id": "QJ19rltRzFo",
+        "name": "44",
+        "groupId": "Tm-Jy7Lz2BY"
+      }
+    },
+    {
+      "id": "p5zonfiMuKI",
+      "groupId": "Tm-Jy7Lz2BY",
+      "giver": {
+        "id": "QJ19rltRzFo",
+        "name": "44",
+        "groupId": "Tm-Jy7Lz2BY"
+      },
+      "receiver": {
+        "id": "nX0qXH2rUSc",
+        "name": "ANE",
+        "groupId": "Tm-Jy7Lz2BY"
+      }
+    },
+    {
+      "id": "Z6hO22iz12o",
+      "groupId": "Tm-Jy7Lz2BY",
+      "giver": {
+        "id": "nX0qXH2rUSc",
+        "name": "ANE",
+        "groupId": "Tm-Jy7Lz2BY"
+      },
+      "receiver": {
+        "id": "7LN5-Gg1U14",
+        "name": "33",
+        "groupId": "Tm-Jy7Lz2BY"
+      }
+    },
+    {
+      "id": "2mcgB-MWXWE",
+      "groupId": "Tm-Jy7Lz2BY",
+      "giver": {
+        "id": "7LN5-Gg1U14",
+        "name": "33",
+        "groupId": "Tm-Jy7Lz2BY"
+      },
+      "receiver": {
+        "id": "_osuJtv63FQ",
+        "name": "21",
+        "groupId": "Tm-Jy7Lz2BY"
+      }
+    },
+    {
+      "id": "a-Nt5yJzzaA",
+      "groupId": "Tm-Jy7Lz2BY",
+      "giver": {
+        "id": "_osuJtv63FQ",
+        "name": "21",
+        "groupId": "Tm-Jy7Lz2BY"
+      },
+      "receiver": {
+        "id": "pUDC-IUVFug",
+        "name": "23",
+        "groupId": "Tm-Jy7Lz2BY"
+      }
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
+}

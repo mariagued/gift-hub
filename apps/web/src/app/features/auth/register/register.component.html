@@ -5,14 +5,14 @@
       <p class="py-2 text-slate-500">Junte-se ao Gift Hub hoje</p>
     </div>
     <div class="card w-full shadow-xl bg-base-100 border border-slate-100">
-      <form class="card-body" (submit)="onRegister($event)">
+      <form class="card-body" (submit)="onRegister($event, nameInput, emailInput)">
         <div class="flex flex-col gap-1 w-full">
           <label class="text-sm font-medium text-slate-700 ml-1">Nome completo</label>
-          <input type="text" placeholder="John Doe" class="input input-bordered w-full focus:border-primary focus:ring-1 focus:ring-primary transition-all" required />
+          <input type="text" #nameInput placeholder="John Doe" class="input input-bordered w-full focus:border-primary focus:ring-1 focus:ring-primary transition-all" required />
         </div>
         <div class="flex flex-col gap-1 w-full mt-2">
           <label class="text-sm font-medium text-slate-700 ml-1">Email</label>
-          <input type="email" placeholder="you@example.com" class="input input-bordered w-full focus:border-primary focus:ring-1 focus:ring-primary transition-all" required />
+          <input type="email" #emailInput placeholder="you@example.com" class="input input-bordered w-full focus:border-primary focus:ring-1 focus:ring-primary transition-all" required />
         </div>
         <div class="flex flex-col gap-1 w-full mt-2">
           <label class="text-sm font-medium text-slate-700 ml-1">Senha</label>

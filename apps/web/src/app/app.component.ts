@@ -2,14 +2,11 @@ import { Component } from '@angular/core';
 import { RouterOutlet, Router, NavigationEnd, RouterLink, RouterLinkActive } from '@angular/router';
 import { filter } from 'rxjs/operators';
 
-import { HeaderComponent } from './core/layout/header/header.component';
-import { SidenavComponent } from './core/layout/sidenav/sidenav.component';
-import { FooterComponent } from './core/layout/footer/footer.component';
 @Component({
   selector: 'app-root',
   standalone: true,
   templateUrl: './app.component.html',
-  imports: [RouterOutlet, RouterLink, RouterLinkActive, HeaderComponent, SidenavComponent, FooterComponent]
+  imports: [RouterOutlet, RouterLink, RouterLinkActive]
 })
 export class AppComponent {
   showLayout = true;
