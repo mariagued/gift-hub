@@ -10,9 +10,13 @@ import { Router, RouterLink } from '@angular/router';
 export class RegisterComponent {
   constructor(private router: Router) {}
 
-  onRegister(event: Event) {
+  onRegister(event: Event, nameInput: HTMLInputElement, emailInput: HTMLInputElement) {
     event.preventDefault();
-    // For demonstration, navigate to login after successful registration
+    const name = nameInput.value.trim();
+    const email = emailInput.value.trim();
+    if (name && email) {
+      localStorage.setItem('currentUser', JSON.stringify({ name, email }));
+    }
     this.router.navigate(['/login']);
   }
 }

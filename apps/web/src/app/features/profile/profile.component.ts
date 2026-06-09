@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 
@@ -107,8 +107,21 @@ import { RouterLink } from '@angular/router';
     </div>
   `
 })
-export class ProfileComponent {
+export class ProfileComponent implements OnInit {
   userName = signal('Maria Guedes');
   userEmail = signal('maria.guedes@gifthub.test');
   memberSince = signal('Janeiro de 2024');
+
+  ngOnInit() {
+    const stored = localStorage.getItem('currentUser');
+    if (stored) {
+      try {
+        const user = JSON.parse(stored);
+        if (user.name) this.userName.set(user.name);
+        if (user.email) this.userEmail.set(user.email);
+      } catch (e) {
+        console.error('Erro ao ler usuário do localStorage:', e);
+      }
+    }
+  }
 }

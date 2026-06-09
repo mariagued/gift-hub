@@ -1,12 +1,12 @@
-import { Component, signal, computed, inject, OnInit } from '@angular/core';
+import { Component, signal, computed, inject, effect, input, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { SecretSantaService, Participant, MatchPair } from '../../core/services/secret-santa.service';
+import { TextInputComponent } from '../../shared/components/text-input.component';
 
 @Component({
   selector: 'app-group-details',
-  standalone: true,
-  imports: [RouterLink, FormsModule],
+  imports: [RouterLink, FormsModule, TextInputComponent],
   template: `
     <div class="space-y-6">
 
@@ -39,14 +39,8 @@ import { SecretSantaService, Participant, MatchPair } from '../../core/services/
         }
 
         <div class="flex flex-col sm:flex-row gap-3">
-          <input type="text" placeholder="Nome do participante *"
-                 [value]="novoNome()"
-                 (input)="novoNome.set($any($event.target).value)"
-                 class="flex-1 px-5 py-3 rounded-2xl border-2 border-slate-100 bg-slate-50 text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-4 focus:ring-purple-500/20 focus:border-purple-500 transition-all font-medium">
-          <input type="email" placeholder="E-mail (opcional)"
-                 [value]="novoEmail()"
-                 (input)="novoEmail.set($any($event.target).value)"
-                 class="flex-1 px-5 py-3 rounded-2xl border-2 border-slate-100 bg-slate-50 text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-4 focus:ring-purple-500/20 focus:border-purple-500 transition-all font-medium">
+          <app-text-input [(value)]="novoNome" placeholder="Nome do participante *" class="flex-1"></app-text-input>
+          <app-text-input [(value)]="novoEmail" type="email" placeholder="E-mail (opcional)" class="flex-1"></app-text-input>
           <button (click)="adicionarParticipante()"
                   [disabled]="salvando()"
                   class="px-7 py-3 bg-purple-600 text-white font-bold rounded-2xl hover:bg-purple-700 transition-all active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed shadow-sm">
@@ -109,18 +103,21 @@ import { SecretSantaService, Participant, MatchPair } from '../../core/services/
 
       <!-- Resultado do Sorteio -->
       @if (totalMatches() > 0) {
-        <div class="bg-white rounded-3xl p-6 shadow-sm border border-slate-100">
-          <h3 class="text-xl font-bold text-slate-800 mb-4">🎉 Resultado do Sorteio</h3>
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            @for (par of matches(); track par.giver.id) {
-              <div class="flex items-center gap-3 p-4 bg-purple-50 rounded-2xl border border-purple-100">
-                <span class="font-bold text-slate-700 flex-1 truncate">{{ par.giver.name }}</span>
-                <svg class="w-5 h-5 text-purple-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                </svg>
-                <span class="font-bold text-purple-700 flex-1 truncate text-right">{{ par.receiver.name }}</span>
-              </div>
-            }
+        <div class="bg-white rounded-3xl p-8 shadow-sm border border-slate-100 text-center space-y-6">
+          <div class="w-20 h-20 bg-purple-50 rounded-full flex items-center justify-center mx-auto mb-2 text-purple-600">
+            <svg class="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 01-1.043 3.296 3.745 3.745 0 01-3.296 1.043A3.745 3.745 0 0110 21a3.745 3.745 0 01-3.296-1.043 3.745 3.745 0 01-1.043-3.296A3.746 3.746 0 013 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 011.043-3.296 3.746 3.746 0 013.296-1.043A3.746 3.746 0 0114 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 013.296 1.043 3.746 3.746 0 011.043 3.296A3.745 3.745 0 0121 12z" />
+            </svg>
+          </div>
+          <div>
+            <h3 class="text-2xl font-bold text-slate-800">🎉 Sorteio Realizado!</h3>
+            <p class="text-slate-500 mt-2 max-w-md mx-auto">Os pares de amigo secreto deste grupo foram gerados de forma aleatória e segura. Cada participante pode ver quem tirou.</p>
+          </div>
+          <div class="flex justify-center pt-2">
+            <a [routerLink]="['/groups', id(), 'revelacao']"
+               class="px-8 py-4 bg-pink-600 text-white font-extrabold rounded-2xl shadow-md hover:bg-pink-700 hover:shadow-lg transition-all active:scale-95 flex items-center gap-3 text-lg">
+              🔍 Ver Meu Amigo Secreto
+            </a>
           </div>
         </div>
       }
@@ -130,6 +127,8 @@ import { SecretSantaService, Participant, MatchPair } from '../../core/services/
 })
 export class GroupDetailsComponent implements OnInit {
   private service = inject(SecretSantaService);
+
+  id = input<string>(''); // Captures the 'id' parameter from the route automatically
 
   participants = this.service.participantsSignal();
   matches = this.service.matchesSignal();
@@ -155,10 +154,16 @@ export class GroupDetailsComponent implements OnInit {
     );
   });
 
+  constructor() {
+    effect(() => {
+      console.log(`[GroupDetails] Total de participantes: ${this.totalParticipants()}`);
+    });
+  }
+
   async ngOnInit() {
     try {
-      await this.service.loadParticipants();
-      await this.service.loadMatches();
+      await this.service.loadParticipants(this.id());
+      await this.service.loadMatches(this.id());
     } finally {
       this.carregando.set(false);
     }
@@ -175,7 +180,8 @@ export class GroupDetailsComponent implements OnInit {
       const novo: Participant = {
         id: crypto.randomUUID(),
         name: this.novoNome().trim(),
-        email: this.novoEmail().trim() || undefined
+        email: this.novoEmail().trim() || undefined,
+        groupId: this.id()
       };
       await this.service.addParticipant(novo);
       this.novoNome.set('');
@@ -191,7 +197,7 @@ export class GroupDetailsComponent implements OnInit {
     this.sorteando.set(true);
     this.erro.set('');
     try {
-      const pares: MatchPair[] = this.service.generateMatches(this.participants());
+      const pares: MatchPair[] = this.service.generateMatches(this.participants(), this.id());
       await this.service.saveMatches(pares);
     } catch (e: unknown) {
       this.erro.set(e instanceof Error ? e.message : 'Erro ao realizar sorteio.');

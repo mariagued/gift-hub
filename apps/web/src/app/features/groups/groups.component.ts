@@ -1,11 +1,11 @@
 import { Component, signal, computed, inject, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { DatePipe, CurrencyPipe } from '@angular/common';
 import { SecretSantaService, Group } from '../../core/services/secret-santa.service';
 
 @Component({
   selector: 'app-groups',
-  standalone: true,
-  imports: [RouterLink],
+  imports: [RouterLink, DatePipe, CurrencyPipe],
   template: `
     <div class="space-y-6">
 
@@ -68,9 +68,9 @@ import { SecretSantaService, Group } from '../../core/services/secret-santa.serv
                   <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                   </svg>
-                  <span>{{ group.drawDate | replace:'-':'/' }}</span>
+                  <span>{{ group.drawDate | date:'dd/MM/yyyy':'UTC' }}</span>
                   @if (group.budgetLimit) {
-                    <span class="ml-2">· R$ {{ group.budgetLimit }}</span>
+                    <span class="ml-2">· {{ group.budgetLimit | currency:'BRL':'symbol':'1.2-2' }}</span>
                   }
                 </div>
 

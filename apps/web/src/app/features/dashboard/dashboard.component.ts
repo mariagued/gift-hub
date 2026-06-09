@@ -1,6 +1,7 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, inject, OnInit, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
+import { SecretSantaService } from '../../core/services/secret-santa.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -52,55 +53,126 @@ import { RouterLink } from '@angular/router';
           </a>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          @for (group of activeGroups(); track group.id) {
-            <!-- Card de Grupo Responsivo -->
-            <div class="bg-white rounded-[1.5rem] shadow-sm p-6 border border-slate-100 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group focus-within:ring-2 focus-within:ring-purple-500 relative overflow-hidden">
-              <div class="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-purple-50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-bl-[4rem]"></div>
-              
-              <div class="flex justify-between items-start mb-5 relative z-10">
-                <h4 class="text-xl font-bold text-slate-800 line-clamp-1 pr-2">{{ group.name }}</h4>
-                <span class="px-3 py-1.5 text-xs font-bold rounded-full whitespace-nowrap flex-shrink-0" 
-                      [ngClass]="group.status === 'Ativo' ? 'bg-green-100 text-green-700 border border-green-200' : 'bg-orange-100 text-orange-700 border border-orange-200'">
-                  {{ group.status }}
-                </span>
-              </div>
-              
-              <div class="space-y-3 mb-8 relative z-10">
-                <div class="flex items-center text-slate-500 text-sm md:text-base font-medium gap-3">
-                  <div class="w-8 h-8 rounded-full bg-slate-50 flex items-center justify-center">
-                    <svg class="w-4 h-4 text-purple-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
-                  </div>
-                  Sorteio: {{ group.drawDate }}
+        @if (carregando()) {
+          <div class="flex items-center justify-center py-20 bg-white rounded-3xl border border-slate-100 shadow-sm">
+            <div class="w-10 h-10 border-4 border-purple-200 border-t-purple-600 rounded-full animate-spin"></div>
+          </div>
+        } @else if (erro()) {
+          <div class="px-4 py-3 bg-red-50 border border-red-200 text-red-600 text-sm rounded-2xl font-medium text-center">
+            {{ erro() }}
+          </div>
+        } @else {
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            @for (group of activeGroups(); track group.id) {
+              <!-- Card de Grupo Responsivo -->
+              <div class="bg-white rounded-[1.5rem] shadow-sm p-6 border border-slate-100 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group focus-within:ring-2 focus-within:ring-purple-500 relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-purple-50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-bl-[4rem]"></div>
+                
+                <div class="flex justify-between items-start mb-5 relative z-10">
+                  <h4 class="text-xl font-bold text-slate-800 line-clamp-1 pr-2">{{ group.name }}</h4>
+                  <span class="px-3 py-1.5 text-xs font-bold rounded-full whitespace-nowrap flex-shrink-0" 
+                        [class]="group.status === 'Ativo'
+                          ? 'bg-green-100 text-green-700 border border-green-200'
+                          : group.status === 'Concluido'
+                          ? 'bg-blue-100 text-blue-700 border border-blue-200'
+                          : 'bg-orange-100 text-orange-700 border border-orange-200'">
+                    {{ group.status }}
+                  </span>
                 </div>
-                <div class="flex items-center text-slate-500 text-sm md:text-base font-medium gap-3">
-                  <div class="w-8 h-8 rounded-full bg-slate-50 flex items-center justify-center">
-                    <svg class="w-4 h-4 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
+                
+                <div class="space-y-3 mb-8 relative z-10">
+                  <div class="flex items-center text-slate-500 text-sm md:text-base font-medium gap-3">
+                    <div class="w-8 h-8 rounded-full bg-slate-50 flex items-center justify-center">
+                      <svg class="w-4 h-4 text-purple-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                    </div>
+                    Sorteio: {{ group.drawDate }}
                   </div>
-                  {{ group.participants }} participantes
+                  <div class="flex items-center text-slate-500 text-sm md:text-base font-medium gap-3">
+                    <div class="w-8 h-8 rounded-full bg-slate-50 flex items-center justify-center">
+                      <svg class="w-4 h-4 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
+                    </div>
+                    {{ group.participants }} participantes
+                  </div>
                 </div>
-              </div>
 
-              @if (group.status === 'Ativo') {
-                <a [routerLink]="['/groups', group.id, 'revelacao']" class="relative z-10 block w-full text-center py-3.5 rounded-xl border-2 border-purple-600 bg-purple-600 text-white font-bold hover:bg-purple-700 hover:border-purple-700 transition-all focus:outline-none shadow-md hover:shadow-lg">
-                  Ver Sorteio
+                @if (group.status === 'Ativo' || group.status === 'Concluido') {
+                  <a [routerLink]="['/groups', group.id, 'revelacao']" class="relative z-10 block w-full text-center py-3.5 rounded-xl border-2 border-purple-600 bg-purple-600 text-white font-bold hover:bg-purple-700 hover:border-purple-700 transition-all focus:outline-none shadow-md hover:shadow-lg">
+                    Ver Sorteio
+                  </a>
+                } @else {
+                  <a [routerLink]="['/groups', group.id]" class="relative z-10 block w-full text-center py-3.5 rounded-xl border-2 border-purple-100 text-purple-700 font-bold hover:bg-purple-600 hover:text-white hover:border-purple-600 transition-all focus:outline-none">
+                    Acessar Grupo
+                  </a>
+                }
+              </div>
+            } @empty {
+              <div class="col-span-full text-center py-16 bg-white rounded-3xl border border-slate-100 shadow-sm w-full">
+                <div class="w-16 h-16 bg-purple-50 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <svg class="w-8 h-8 text-purple-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                </div>
+                <h3 class="text-xl font-bold text-slate-700 mb-2">Nenhum grupo ativo</h3>
+                <p class="text-slate-400 mb-6">Você ainda não possui grupos criados.</p>
+                <a routerLink="/groups/new" class="px-6 py-3 bg-purple-600 text-white font-bold rounded-2xl hover:bg-purple-700 transition-all">
+                  + Criar Grupo
                 </a>
-              } @else {
-                <a [routerLink]="['/groups', group.id]" class="relative z-10 block w-full text-center py-3.5 rounded-xl border-2 border-purple-100 text-purple-700 font-bold hover:bg-purple-600 hover:text-white hover:border-purple-600 transition-all focus:outline-none">
-                  Acessar Grupo
-                </a>
-              }
-            </div>
-          }
-        </div>
+              </div>
+            }
+          </div>
+        }
       </section>
     </div>
   `
 })
-export class DashboardComponent {
-  activeGroups = signal([
-    { id: '1', name: 'Família 2024', drawDate: '20/12/2024', participants: 15, status: 'Pendente' },
-    { id: '2', name: 'Amigos do Trabalho', drawDate: '15/12/2024', participants: 8, status: 'Ativo' },
-    { id: '3', name: 'Turma da Faculdade', drawDate: '18/12/2024', participants: 12, status: 'Ativo' }
-  ]);
+export class DashboardComponent implements OnInit {
+  private service = inject(SecretSantaService);
+
+  groups = this.service.groupsSignal();
+  participants = this.service.participantsSignal();
+
+  carregando = signal(true);
+  erro = signal('');
+
+  activeGroups = computed(() => {
+    const allGroups = this.groups();
+    const allParticipants = this.participants();
+
+    return allGroups.map(group => {
+      // Conta quantos participantes pertencem a esse grupo
+      const count = allParticipants.filter(p => p.groupId === group.id).length;
+      
+      // Formata a data de sorteio (dd/MM/yyyy) caso esteja como YYYY-MM-DD
+      let formattedDate = group.drawDate;
+      if (group.drawDate && group.drawDate.includes('-')) {
+        try {
+          const parts = group.drawDate.split('-');
+          formattedDate = `${parts[2]}/${parts[1]}/${parts[0]}`;
+        } catch (e) {
+          // Mantém o original
+        }
+      }
+
+      return {
+        id: group.id,
+        name: group.name,
+        drawDate: formattedDate || 'Não informada',
+        participants: count,
+        status: group.status
+      };
+    });
+  });
+
+  async ngOnInit() {
+    try {
+      this.carregando.set(true);
+      await this.service.loadGroups();
+      await this.service.loadParticipants(); // Busca todos os participantes do banco de dados
+    } catch (e) {
+      console.error(e);
+      this.erro.set('Erro ao carregar os dados. Verifique a conexão com o servidor.');
+    } finally {
+      this.carregando.set(false);
+    }
+  }
 }

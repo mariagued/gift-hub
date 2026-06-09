@@ -1,11 +1,10 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, signal, input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 import { SecretSantaService, Group } from '../../core/services/secret-santa.service';
 
 @Component({
   selector: 'app-create-group',
-  standalone: true,
   imports: [ReactiveFormsModule],
   template: `
     <div class="max-w-2xl mx-auto px-2 pb-6">
@@ -92,16 +91,16 @@ import { SecretSantaService, Group } from '../../core/services/secret-santa.serv
     </div>
   `
 })
-export class CreateGroupComponent {
+export class CreateGroupComponent implements OnInit {
   private fb      = inject(FormBuilder);
   private router  = inject(Router);
-  private route   = inject(ActivatedRoute);
   private service = inject(SecretSantaService);
+
+  id = input<string>(); // Captures the optional route parameter 'id' automatically
 
   editMode  = signal(false);
   salvando  = signal(false);
   erro      = signal('');
-  private groupId: string | null = null;
 
   groupForm: FormGroup = this.fb.group({
     name:        ['', [Validators.required, Validators.minLength(3)]],
@@ -110,20 +109,19 @@ export class CreateGroupComponent {
     status:      ['Pendente']
   });
 
-  constructor() {
-    this.groupId = this.route.snapshot.paramMap.get('id');
-    if (this.groupId) {
+  async ngOnInit() {
+    const groupId = this.id();
+    if (groupId) {
       this.editMode.set(true);
       // Preenche o formulário com os dados atuais
-      const group = this.service.groupsSignal()().find(g => g.id === this.groupId);
+      const group = this.service.groupsSignal()().find(g => g.id === groupId);
       if (group) {
         this.groupForm.patchValue(group);
       } else {
         // Carrega do backend se o signal ainda não foi populado
-        this.service.loadGroups().then(() => {
-          const g = this.service.groupsSignal()().find(x => x.id === this.groupId);
-          if (g) this.groupForm.patchValue(g);
-        });
+        await this.service.loadGroups();
+        const g = this.service.groupsSignal()().find(x => x.id === groupId);
+        if (g) this.groupForm.patchValue(g);
       }
     }
   }
@@ -139,9 +137,10 @@ export class CreateGroupComponent {
     this.erro.set('');
     try {
       const val = this.groupForm.value;
-      if (this.editMode() && this.groupId) {
-        await this.service.updateGroup(this.groupId, val);
-        this.router.navigate(['/groups', this.groupId]);
+      const groupId = this.id();
+      if (this.editMode() && groupId) {
+        await this.service.updateGroup(groupId, val);
+        this.router.navigate(['/groups', groupId]);
       } else {
         const created = await this.service.createGroup({ ...val, status: 'Pendente' });
         this.router.navigate(['/groups', created.id]);

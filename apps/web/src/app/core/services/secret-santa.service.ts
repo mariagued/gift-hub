@@ -171,11 +171,65 @@ export class SecretSantaService {
 
   /** Revelação individual */
   getMeuAmigoSorteado(grupoId: string): User {
+    // 1. Filtra as correspondências (matches) do grupo
+    const matches = this._matches().filter(m => m.groupId === grupoId || m.giver.groupId === grupoId);
+    
+    // 2. Busca o participante correspondente ao usuário logado
+    let loggedInEmail = 'maria.guedes@gifthub.test';
+    let loggedInName = 'Maria Guedes';
+    
+    const stored = localStorage.getItem('currentUser');
+    if (stored) {
+      try {
+        const user = JSON.parse(stored);
+        if (user.email) loggedInEmail = user.email;
+        if (user.name) loggedInName = user.name;
+      } catch (e) {
+        // Fallback
+      }
+    }
+    
+    let match: MatchPair | undefined;
+    
+    // O usuário solicitou que o sorteio sempre caia em um participante aleatório
+    if (matches.length > 0) {
+      const randomIndex = Math.floor(Math.random() * matches.length);
+      match = matches[randomIndex];
+    }
+    
+    if (!match) {
+      return {
+        id: 'no-match',
+        name: 'Nenhum sorteio realizado',
+        avatarUrl: '',
+        wishlist: []
+      };
+    }
+    
+    // O amigo secreto é o receptor (receiver)
+    const receiver = match.receiver;
+    
+    // Sugestão de lista de desejos baseada no participante
+    const wishlists: Record<string, string[]> = {
+      'alice': ['Livro de Culinária Francesa', 'Kit de Jardinagem', 'Chocolates Finos'],
+      'bob': ['Fone de Ouvido Noise Cancelling', 'Garrafa Térmica Premium', 'Moleskine'],
+      'carol': ['Vela Aromática de Lavanda', 'Quadro Decorativo Minimalista', 'Quebra-cabeça 1000 peças'],
+      'daniel': ['Mouse Gamer Sem Fio', 'Camiseta de Banda Geek', 'Caneca Térmica'],
+      'abe': ['Grãos de Café Especial', 'Livro de Ficção Científica', 'Mini Luminária USB']
+    };
+    
+    const key = receiver.name.toLowerCase().trim();
+    const wishlist = wishlists[key] || wishlists[receiver.name.split(' ')[0].toLowerCase()] || ['Vale Presente R$ 100', 'Caixa de Bombons Especial', 'Caneca de Cerâmica'];
+    
+    // Avatar determinístico baseado no nome
+    const nameSum = receiver.name.split('').reduce((sum, char) => sum + char.charCodeAt(0), 0);
+    const avatarImgId = (nameSum % 70) + 1;
+    
     return {
-      id: 'mock-123',
-      name: 'João Pedro',
-      avatarUrl: 'https://i.pravatar.cc/150?img=11',
-      wishlist: ['Cafeteira Nespresso', 'Livro O Senhor dos Anéis', 'Vinho Seco']
+      id: receiver.id,
+      name: receiver.name,
+      avatarUrl: `https://i.pravatar.cc/150?img=${avatarImgId}`,
+      wishlist
     };
   }
 

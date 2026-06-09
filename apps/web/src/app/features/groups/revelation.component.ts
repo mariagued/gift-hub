@@ -1,12 +1,10 @@
-import { Component, signal, inject, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { ActivatedRoute, RouterModule } from '@angular/router';
+import { Component, signal, inject, input, OnInit } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { SecretSantaService, User } from '../../core/services/secret-santa.service';
 
 @Component({
   selector: 'app-revelation',
-  standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [RouterLink],
   template: `
     <div class="max-w-2xl mx-auto space-y-8 py-8 animate-fade-in text-center px-4">
       
@@ -50,40 +48,54 @@ import { SecretSantaService, User } from '../../core/services/secret-santa.servi
           } @else {
             <!-- Estado Após Revelar (com o Amigo Sorteado) -->
             @if (amigoSorteado(); as amigo) {
-              <div class="flex flex-col items-center gap-6 animate-fade-in-up">
-                
-                <p class="text-sm font-bold text-purple-600 uppercase tracking-widest">Seu amigo secreto é</p>
-                
-                <div class="relative">
-                  <img [src]="amigo.avatarUrl" [alt]="amigo.name" class="w-40 h-40 rounded-full object-cover shadow-2xl border-4 border-white z-10 relative">
-                  <div class="absolute inset-0 rounded-full border-4 border-purple-200 animate-ping opacity-20"></div>
-                </div>
-
-                <h3 class="text-4xl font-extrabold text-slate-800">{{ amigo.name }}</h3>
-
-                <!-- Wishlist Section -->
-                <div class="mt-4 w-full text-left bg-slate-50 p-6 rounded-2xl border border-slate-100">
-                  <h4 class="text-lg font-bold text-slate-700 mb-4 flex items-center gap-2">
-                    <svg class="w-5 h-5 text-pink-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+              @if (amigo.id === 'no-match') {
+                <div class="flex flex-col items-center gap-6 animate-fade-in-up text-center py-6">
+                  <div class="w-20 h-20 bg-amber-50 rounded-full flex items-center justify-center text-amber-500 mx-auto">
+                    <svg class="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
                     </svg>
-                    Lista de Desejos
-                  </h4>
-                  <ul class="space-y-3">
-                    @for (item of amigo.wishlist; track item) {
-                      <li class="flex items-center gap-3 text-slate-600 bg-white p-3 rounded-xl shadow-sm border border-slate-50">
-                        <svg class="w-4 h-4 text-purple-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                          <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
-                        </svg>
-                        <span class="font-medium">{{ item }}</span>
-                      </li>
-                    } @empty {
-                      <li class="text-sm text-slate-500 italic text-center py-2">Nenhum item na lista ainda.</li>
-                    }
-                  </ul>
+                  </div>
+                  <h3 class="text-2xl font-bold text-slate-700">Sorteio não realizado</h3>
+                  <p class="text-slate-500 max-w-md mx-auto">O sorteio dos amigos secretos ainda não foi realizado para este grupo. Por favor, acesse os detalhes do grupo e realize o sorteio primeiro.</p>
+                  <a [routerLink]="['/groups', id()]" class="mt-4 px-6 py-3 bg-purple-600 text-white font-bold rounded-2xl shadow-sm hover:bg-purple-700 transition-all active:scale-95">
+                    Voltar para o Grupo
+                  </a>
                 </div>
+              } @else {
+                <div class="flex flex-col items-center gap-6 animate-fade-in-up">
+                  
+                  <p class="text-sm font-bold text-purple-600 uppercase tracking-widest">Seu amigo secreto é</p>
+                  
+                  <div class="relative">
+                    <img [src]="amigo.avatarUrl" [alt]="amigo.name" class="w-40 h-40 rounded-full object-cover shadow-2xl border-4 border-white z-10 relative">
+                    <div class="absolute inset-0 rounded-full border-4 border-purple-200 animate-ping opacity-20"></div>
+                  </div>
 
-              </div>
+                  <h3 class="text-4xl font-extrabold text-slate-800">{{ amigo.name }}</h3>
+
+                  <!-- Wishlist Section -->
+                  <div class="mt-4 w-full text-left bg-slate-50 p-6 rounded-2xl border border-slate-100">
+                    <h4 class="text-lg font-bold text-slate-700 mb-4 flex items-center gap-2">
+                      <svg class="w-5 h-5 text-pink-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                      </svg>
+                      Lista de Desejos
+                    </h4>
+                    <ul class="space-y-3">
+                      @for (item of amigo.wishlist; track item) {
+                        <li class="flex items-center gap-3 text-slate-600 bg-white p-3 rounded-xl shadow-sm border border-slate-50">
+                          <svg class="w-4 h-4 text-purple-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                          </svg>
+                          <span class="font-medium">{{ item }}</span>
+                        </li>
+                      } @empty {
+                        <li class="text-sm text-slate-500 italic text-center py-2">Nenhum item na lista ainda.</li>
+                      }
+                    </ul>
+                  </div>
+                </div>
+              }
             }
           }
         </div>
@@ -126,23 +138,24 @@ import { SecretSantaService, User } from '../../core/services/secret-santa.servi
   `]
 })
 export class RevelationComponent implements OnInit {
-  private route = inject(ActivatedRoute);
   private secretSantaService = inject(SecretSantaService);
 
+  id = input<string>(''); // Captures the 'id' parameter from the route automatically
   revelado = signal(false);
   amigoSorteado = signal<User | null>(null);
-  groupId: string | null = null;
 
-  ngOnInit() {
-    this.groupId = this.route.snapshot.paramMap.get('id');
+  async ngOnInit() {
+    try {
+      await this.secretSantaService.loadParticipants(this.id());
+      await this.secretSantaService.loadMatches(this.id());
+    } catch (e) {
+      console.error('Erro ao carregar dados do grupo/sorteio', e);
+    }
   }
 
   revelar() {
-    if (this.groupId) {
-      // Simula um delay para efeito visual dramático (opcional)
-      const data = this.secretSantaService.getMeuAmigoSorteado(this.groupId);
-      this.amigoSorteado.set(data);
-      this.revelado.set(true);
-    }
+    const data = this.secretSantaService.getMeuAmigoSorteado(this.id());
+    this.amigoSorteado.set(data);
+    this.revelado.set(true);
   }
 }
