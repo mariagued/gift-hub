@@ -1,9 +1,12 @@
 {
-  "name": "web",
-  "short_name": "web",
+  "name": "Gift Hub",
+  "short_name": "GiftHub",
+  "description": "Aplicativo Gift Hub para gerenciamento e listas.",
   "display": "standalone",
-  "scope": "./",
-  "start_url": "./",
+  "scope": "/gift-hub/",
+  "start_url": "/gift-hub/",
+  "theme_color": "#ffffff",
+  "background_color": "#ffffff",
   "icons": [
     {
       "src": "icons/icon-72x72.png",
