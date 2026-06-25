@@ -1,11 +1,11 @@
 import { Component, signal, computed, inject, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { DatePipe, CurrencyPipe } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { SecretSantaService, Group } from '../../core/services/secret-santa.service';
 
 @Component({
   selector: 'app-groups',
-  imports: [RouterLink, DatePipe, CurrencyPipe],
+  imports: [RouterLink, DatePipe],
   template: `
     <div class="space-y-6">
 
