@@ -1,8 +1,11 @@
 {
     "name": "gift-hub",
     "version": "1.0.0",
-    "description": "Monorepo do projeto da disciplina",
     "private": true,
+    "description": "Monorepo do projeto da disciplina",
+    "engines": {
+        "node": ">=20.0.0"
+    },
     "workspaces": [
         "apps/*",
         "libs/*"
@@ -10,7 +13,9 @@
     "scripts": {
         "dev:api": "npm run start:dev -w apps/api",
         "dev:web": "npm run start -w apps/web",
-        "json-server": "json-server --watch apps/web/db.json --port 3000"
+        "json-server": "json-server --watch apps/web/db.json --port 3000",
+        "lint": "npm run lint --workspaces --if-present",
+        "test": "npm run test --workspaces --if-present"
     },
     "keywords": [
         "angular",
