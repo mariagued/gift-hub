@@ -1,3 +1,5 @@
+[![CI - Gift Hub Validation](https://github.com/mariagued/gift-hub/actions/workflows/ci.yml/badge.svg)](https://github.com/mariagued/gift-hub/actions/workflows/ci.yml)
+
 # 🎁 GiftHub - O seu Amigo Secreto Descomplicado
 
 ## 👥 Identificação/Autores
