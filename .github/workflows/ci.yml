@@ -36,4 +36,4 @@ jobs:
         run: npm run lint
 
       - name: Run Angular Unit Tests
-        run: npm run test -w apps/web -- --watchAll=false
+        run: npm run test -w apps/web -- --watchAll=false --ci
