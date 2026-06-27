@@ -1,0 +1,36 @@
+<div class="hero min-h-[calc(100vh-100px)]">
+    <div class="hero-content flex-col w-full max-w-md">
+        <div class="text-center mb-2">
+            <h1 class="text-4xl font-bold text-slate-800 tracking-tight">Bem vindo de volta!</h1>
+            <p class="py-2 text-slate-500">Inicie sessão para acessar sua conta Gift Hub.</p>
+        </div>
+        <div class="card w-full shadow-xl bg-base-100 border border-slate-100">
+            <form class="card-body" (submit)="onLogin($event, emailInput)">
+                <div class="flex flex-col gap-1 w-full">
+                    <label class="text-sm font-medium text-slate-700 ml-1">Email</label>
+                    <input type="email" #emailInput placeholder="you@example.com"
+                        class="input input-bordered w-full focus:border-primary focus:ring-1 focus:ring-primary transition-all"
+                        required />
+                </div>
+                <div class="flex flex-col gap-1 w-full mt-2">
+                    <div class="flex justify-between items-center w-full">
+                        <label class="text-sm font-medium text-slate-700 ml-1">Senha</label>
+                        <a href="#" class="text-xs link link-hover text-slate-500">Esqueceu a senha?</a>
+                    </div>
+                    <input type="password" placeholder="••••••••"
+                        class="input input-bordered w-full focus:border-primary focus:ring-1 focus:ring-primary transition-all"
+                        required />
+                </div>
+                <div class="mt-6">
+                    <button type="submit"
+                        class="btn w-full text-white shadow-md hover:shadow-lg transition-shadow bg-gradient-to-r from-[#630ed4] to-[#7c3aed] border-none">Entrar</button>
+                </div>
+                <div class="divider text-slate-400 text-sm my-4">Novo aqui?</div>
+                <div class="text-center">
+                    <a routerLink="/register"
+                        class="btn btn-outline btn-block text-[#630ed4] border-[#630ed4] hover:text-white hover:bg-gradient-to-r hover:from-[#630ed4] hover:to-[#7c3aed] hover:border-transparent">Criar uma conta</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

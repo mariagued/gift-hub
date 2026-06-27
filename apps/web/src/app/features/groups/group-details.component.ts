@@ -1,0 +1,208 @@
+import { Component, signal, computed, inject, effect, input, OnInit } from '@angular/core';
+import { RouterLink } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+import { SecretSantaService, Participant, MatchPair } from '../../core/services/secret-santa.service';
+import { TextInputComponent } from '../../shared/components/text-input.component';
+
+@Component({
+  selector: 'app-group-details',
+  imports: [RouterLink, FormsModule, TextInputComponent],
+  template: `
+    <div class="space-y-6">
+
+      <!-- Cabeçalho -->
+      <div class="bg-white rounded-3xl p-6 shadow-sm border border-slate-100 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+        <div>
+          <h2 class="text-3xl font-extrabold text-slate-800">Detalhes do Grupo</h2>
+          <p class="text-slate-500 mt-1 text-sm">Gerencie participantes e realize o sorteio.</p>
+        </div>
+        <div class="flex gap-4 p-4 bg-slate-50 rounded-2xl w-full md:w-auto text-center divide-x divide-slate-200">
+          <div class="px-2">
+            <p class="text-xs text-slate-500 font-semibold uppercase tracking-wider mb-1">Total</p>
+            <p class="text-2xl font-bold text-slate-800">{{ totalParticipants() }}</p>
+          </div>
+          <div class="px-2">
+            <p class="text-xs text-slate-500 font-semibold uppercase tracking-wider mb-1">Pares</p>
+            <p class="text-2xl font-bold text-green-600">{{ totalMatches() }}</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Formulário: Adicionar Participante -->
+      <div class="bg-white rounded-3xl p-6 shadow-sm border border-slate-100">
+        <h3 class="text-lg font-bold text-slate-700 mb-4">Adicionar Participante</h3>
+
+        @if (erro()) {
+          <div class="mb-4 px-4 py-3 bg-red-50 border border-red-200 text-red-600 text-sm rounded-2xl font-medium">
+            {{ erro() }}
+          </div>
+        }
+
+        <div class="flex flex-col sm:flex-row gap-3">
+          <app-text-input [(value)]="novoNome" placeholder="Nome do participante *" class="flex-1"></app-text-input>
+          <app-text-input [(value)]="novoEmail" type="email" placeholder="E-mail (opcional)" class="flex-1"></app-text-input>
+          <button (click)="adicionarParticipante()"
+                  [disabled]="salvando()"
+                  class="px-7 py-3 bg-purple-600 text-white font-bold rounded-2xl hover:bg-purple-700 transition-all active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed shadow-sm">
+            @if (salvando()) { Salvando... } @else { + Adicionar }
+          </button>
+        </div>
+      </div>
+
+      <!-- Barra de busca + botão sorteio -->
+      <div class="flex flex-col md:flex-row justify-between gap-4 items-center">
+        <div class="relative w-full md:w-96">
+          <span class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">
+            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+          </span>
+          <input type="text" placeholder="Buscar por nome ou e-mail..."
+                 [value]="termoBusca()"
+                 (input)="termoBusca.set($any($event.target).value)"
+                 class="w-full pl-12 pr-4 py-3 rounded-2xl border border-slate-200 bg-white text-slate-800 shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+        </div>
+
+        <button (click)="realizarSorteio()"
+                [disabled]="totalParticipants() < 3 || sorteando()"
+                class="w-full md:w-auto flex items-center justify-center gap-2 px-6 py-3 bg-purple-600 text-white font-bold rounded-2xl shadow-sm hover:bg-purple-700 hover:shadow-md transition-all active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed">
+          @if (sorteando()) { Sorteando... } @else { 🎁 Realizar Sorteio }
+        </button>
+      </div>
+
+      <!-- Lista de Participantes -->
+      <div>
+        <h3 class="text-xl font-bold text-slate-800 border-b border-slate-200 pb-2 mb-4">
+          Participantes ({{ participantesFiltrados().length }})
+        </h3>
+
+        @if (carregando()) {
+          <div class="flex items-center justify-center h-32">
+            <div class="w-10 h-10 border-4 border-purple-200 border-t-purple-600 rounded-full animate-spin"></div>
+          </div>
+        } @else if (participantesFiltrados().length === 0) {
+          <div class="text-center py-12 text-slate-400">
+            <p class="font-medium">Nenhum participante encontrado.</p>
+          </div>
+        } @else {
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            @for (p of participantesFiltrados(); track p.id) {
+              <div class="bg-white rounded-2xl shadow-sm p-4 border border-slate-100 flex items-center gap-4 hover:shadow-md transition-shadow">
+                <div class="w-12 h-12 rounded-full bg-purple-100 text-purple-700 font-bold flex items-center justify-center text-lg flex-shrink-0">
+                  {{ p.name.charAt(0).toUpperCase() }}
+                </div>
+                <div class="flex-1 overflow-hidden">
+                  <h4 class="font-bold text-slate-800 truncate" [title]="p.name">{{ p.name }}</h4>
+                  @if (p.email) {
+                    <p class="text-xs text-slate-400 truncate mt-0.5">{{ p.email }}</p>
+                  }
+                </div>
+              </div>
+            }
+          </div>
+        }
+      </div>
+
+      <!-- Resultado do Sorteio -->
+      @if (totalMatches() > 0) {
+        <div class="bg-white rounded-3xl p-8 shadow-sm border border-slate-100 text-center space-y-6">
+          <div class="w-20 h-20 bg-purple-50 rounded-full flex items-center justify-center mx-auto mb-2 text-purple-600">
+            <svg class="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 01-1.043 3.296 3.745 3.745 0 01-3.296 1.043A3.745 3.745 0 0110 21a3.745 3.745 0 01-3.296-1.043 3.745 3.745 0 01-1.043-3.296A3.746 3.746 0 013 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 011.043-3.296 3.746 3.746 0 013.296-1.043A3.746 3.746 0 0114 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 013.296 1.043 3.746 3.746 0 011.043 3.296A3.745 3.745 0 0121 12z" />
+            </svg>
+          </div>
+          <div>
+            <h3 class="text-2xl font-bold text-slate-800">🎉 Sorteio Realizado!</h3>
+            <p class="text-slate-500 mt-2 max-w-md mx-auto">Os pares de amigo secreto deste grupo foram gerados de forma aleatória e segura. Cada participante pode ver quem tirou.</p>
+          </div>
+          <div class="flex justify-center pt-2">
+            <a [routerLink]="['/groups', id(), 'revelacao']"
+               class="px-8 py-4 bg-pink-600 text-white font-extrabold rounded-2xl shadow-md hover:bg-pink-700 hover:shadow-lg transition-all active:scale-95 flex items-center gap-3 text-lg">
+              🔍 Ver Meu Amigo Secreto
+            </a>
+          </div>
+        </div>
+      }
+
+    </div>
+  `
+})
+export class GroupDetailsComponent implements OnInit {
+  private service = inject(SecretSantaService);
+
+  id = input<string>(''); // Captures the 'id' parameter from the route automatically
+
+  participants = this.service.participantsSignal();
+  matches = this.service.matchesSignal();
+
+  novoNome = signal('');
+  novoEmail = signal('');
+  termoBusca = signal('');
+  carregando = signal(true);
+  salvando = signal(false);
+  sorteando = signal(false);
+  erro = signal('');
+
+  totalParticipants = computed(() => this.participants().length);
+  totalMatches = computed(() => this.matches().length);
+
+  participantesFiltrados = computed(() => {
+    const termo = this.termoBusca().toLowerCase();
+    const lista = this.participants();
+    if (!termo) return lista;
+    return lista.filter(p =>
+      p.name.toLowerCase().includes(termo) ||
+      (p.email ?? '').toLowerCase().includes(termo)
+    );
+  });
+
+  constructor() {
+    effect(() => {
+      console.log(`[GroupDetails] Total de participantes: ${this.totalParticipants()}`);
+    });
+  }
+
+  async ngOnInit() {
+    try {
+      await this.service.loadParticipants(this.id());
+      await this.service.loadMatches(this.id());
+    } finally {
+      this.carregando.set(false);
+    }
+  }
+
+  async adicionarParticipante() {
+    this.erro.set('');
+    if (!this.novoNome().trim()) {
+      this.erro.set('O nome do participante é obrigatório.');
+      return;
+    }
+    this.salvando.set(true);
+    try {
+      const novo: Participant = {
+        id: crypto.randomUUID(),
+        name: this.novoNome().trim(),
+        email: this.novoEmail().trim() || undefined,
+        groupId: this.id()
+      };
+      await this.service.addParticipant(novo);
+      this.novoNome.set('');
+      this.novoEmail.set('');
+    } catch {
+      this.erro.set('Erro ao salvar. Verifique se o json-server está rodando.');
+    } finally {
+      this.salvando.set(false);
+    }
+  }
+
+  async realizarSorteio() {
+    this.sorteando.set(true);
+    this.erro.set('');
+    try {
+      const pares: MatchPair[] = this.service.generateMatches(this.participants(), this.id());
+      await this.service.saveMatches(pares);
+    } catch (e: unknown) {
+      this.erro.set(e instanceof Error ? e.message : 'Erro ao realizar sorteio.');
+    } finally {
+      this.sorteando.set(false);
+    }
+  }
+}
