@@ -2,10 +2,11 @@ import { Component, signal, computed, inject, effect, input, OnInit } from '@ang
 import { RouterLink } from '@angular/router';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { SecretSantaService, Participant, MatchPair } from '../../core/services/secret-santa.service';
+import { SearchInputComponent } from '../../shared/components/search-input/search-input.component';
 
 @Component({
   selector: 'app-group-details',
-  imports: [RouterLink, ReactiveFormsModule],
+  imports: [RouterLink, ReactiveFormsModule, SearchInputComponent],
   template: `
     <div class="space-y-6">
 
@@ -65,13 +66,7 @@ import { SecretSantaService, Participant, MatchPair } from '../../core/services/
       <!-- Barra de busca + botão sorteio -->
       <div class="flex flex-col md:flex-row justify-between gap-4 items-center">
         <div class="relative w-full md:w-96">
-          <span class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">
-            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
-          </span>
-          <input type="text" placeholder="Buscar por nome ou e-mail..."
-                 [value]="termoBusca()"
-                 (input)="termoBusca.set($any($event.target).value)"
-                 class="w-full pl-12 pr-4 py-3 rounded-2xl border border-slate-200 bg-white text-slate-800 shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+          <app-search-input [(value)]="termoBusca" placeholder="Buscar por nome ou e-mail..." />
         </div>
 
         <button (click)="realizarSorteio()"
