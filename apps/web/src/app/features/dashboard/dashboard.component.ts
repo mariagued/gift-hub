@@ -148,7 +148,7 @@ export class DashboardComponent {
     return allGroups.map(group => {
       // Conta quantos participantes pertencem a esse grupo
       const count = allParticipants.filter(p => p.groupId === group.id).length;
-      
+
       // Formata a data de sorteio (dd/MM/yyyy) caso esteja como YYYY-MM-DD
       let formattedDate = group.drawDate;
       if (group.drawDate && group.drawDate.includes('-')) {
