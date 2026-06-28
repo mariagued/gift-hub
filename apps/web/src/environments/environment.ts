@@ -1,6 +1,5 @@
 export const environment = {
   apiUrl: 'http://localhost:3001',
-  supabaseUrl: 'http://127.0.0.1:54321',
-  supabaseKey: 'sb_publishable_ACJWlzQHlZjBrEguHvfOxg_3BJgxAaH'
+  supabaseUrl: 'https://wpyoizomsampbqhcwrkt.supabase.co',
+  supabaseKey: 'sb_publishable_5dWHbGKWJRU8s1S33KSn5g_Ez8CTWCy'
 };
-
