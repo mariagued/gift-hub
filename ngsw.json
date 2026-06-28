@@ -1,0 +1,99 @@
+{
+  "configVersion": 1,
+  "timestamp": 1782677890331,
+  "index": "/gift-hub/index.html",
+  "assetGroups": [
+    {
+      "name": "app",
+      "installMode": "prefetch",
+      "updateMode": "prefetch",
+      "cacheQueryOptions": {
+        "ignoreVary": true
+      },
+      "urls": [
+        "/gift-hub/chunk-3E6235M7.js",
+        "/gift-hub/chunk-3YOQWITB.js",
+        "/gift-hub/chunk-4IWH27M7.js",
+        "/gift-hub/chunk-7IOUM3QC.js",
+        "/gift-hub/chunk-CYQS5ZPM.js",
+        "/gift-hub/chunk-JB4ULIQC.js",
+        "/gift-hub/chunk-JWGM65QQ.js",
+        "/gift-hub/chunk-LKBEJVMM.js",
+        "/gift-hub/chunk-OBC3LDWG.js",
+        "/gift-hub/chunk-WLBK4KN2.js",
+        "/gift-hub/chunk-YXYZPLMB.js",
+        "/gift-hub/index.html",
+        "/gift-hub/main-YVOKEX3U.js",
+        "/gift-hub/manifest.webmanifest",
+        "/gift-hub/polyfills-YMBILSHJ.js",
+        "/gift-hub/styles-V6E4CPUE.css"
+      ],
+      "patterns": []
+    },
+    {
+      "name": "assets",
+      "installMode": "lazy",
+      "updateMode": "prefetch",
+      "cacheQueryOptions": {
+        "ignoreVary": true
+      },
+      "urls": [
+        "/gift-hub/icons/icon-128x128.png",
+        "/gift-hub/icons/icon-144x144.png",
+        "/gift-hub/icons/icon-152x152.png",
+        "/gift-hub/icons/icon-192x192.png",
+        "/gift-hub/icons/icon-384x384.png",
+        "/gift-hub/icons/icon-512x512.png",
+        "/gift-hub/icons/icon-72x72.png",
+        "/gift-hub/icons/icon-96x96.png"
+      ],
+      "patterns": []
+    }
+  ],
+  "dataGroups": [],
+  "hashTable": {
+    "/gift-hub/chunk-3E6235M7.js": "10063230e6ecd4b864cbeb5304fe32a0bcc3cbf0",
+    "/gift-hub/chunk-3YOQWITB.js": "02e9a91f63da45fcb6038c652586783a3c03b9ac",
+    "/gift-hub/chunk-4IWH27M7.js": "c563a267d636ed2dd4af92e8e376b0f81c6c8779",
+    "/gift-hub/chunk-7IOUM3QC.js": "08b36fe184febf517ba7b1a83bb9b91851d7a4b8",
+    "/gift-hub/chunk-CYQS5ZPM.js": "d929fff80b4152ddf8bc3413ab22efea96cebac8",
+    "/gift-hub/chunk-JB4ULIQC.js": "3b58ecc2b300d65758cd0fa596b6613648281321",
+    "/gift-hub/chunk-JWGM65QQ.js": "7feaad0a930f68f04cc0f89d2ecaeba18c284939",
+    "/gift-hub/chunk-LKBEJVMM.js": "efeefb8839610805afc6c016247aab81c3f7e1cc",
+    "/gift-hub/chunk-OBC3LDWG.js": "bb4b8fbd91f2c7db12cbf2793c5b582be29c35be",
+    "/gift-hub/chunk-WLBK4KN2.js": "25174e1e41f3ba1c55973aa217a42032e58467c9",
+    "/gift-hub/chunk-YXYZPLMB.js": "90dc57e27fe4ab5f0a66c55d709743f72a0ab189",
+    "/gift-hub/icons/icon-128x128.png": "f912963bdc6d5a38d8f1dd0afbaab2ce8d657acb",
+    "/gift-hub/icons/icon-144x144.png": "b155fd5f2fd5d2ea7760721063003c4cd95fd783",
+    "/gift-hub/icons/icon-152x152.png": "eae6e0f0c8afb8aaae339e2a569b43e9238e5e6c",
+    "/gift-hub/icons/icon-192x192.png": "15c4180454633880d98674aa7394656196c91584",
+    "/gift-hub/icons/icon-384x384.png": "94a915751ef6c9282df9aea405ad679230631814",
+    "/gift-hub/icons/icon-512x512.png": "1de182f76f7329dfa8f9fcdd1fdcdd695bea6a99",
+    "/gift-hub/icons/icon-72x72.png": "aa88a6096bd973be7f6d7a5489bfa6bc2463f8c4",
+    "/gift-hub/icons/icon-96x96.png": "7fb8f59c30ce2ff12c700321a0b39e14b3dc8f95",
+    "/gift-hub/index.html": "34f9d28b02627006913d9539bcc664529c4e48ac",
+    "/gift-hub/main-YVOKEX3U.js": "6cdc1fdd1004f9d7da383b31fec084916809dc24",
+    "/gift-hub/manifest.webmanifest": "982a21e978de703c38e06027b0674a9cda36e594",
+    "/gift-hub/polyfills-YMBILSHJ.js": "f2241e9a25858f895ce299d15f6f22e849e2fd72",
+    "/gift-hub/styles-V6E4CPUE.css": "4eb490d4116eda5e46e92cfdb484d8424403d932"
+  },
+  "navigationUrls": [
+    {
+      "positive": true,
+      "regex": "^\\/.*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*\\.[^/]*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*__[^/]*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*__[^/]*\\/.*$"
+    }
+  ],
+  "navigationRequestStrategy": "performance"
+}
