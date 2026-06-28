@@ -1,0 +1,36 @@
+{
+  "version": 2,
+  "buildCommand": "npm run build -w apps/web",
+  "outputDirectory": "apps/web/dist/web/browser",
+  "framework": "angular",
+  "routes": [
+    {
+      "src": "/manifest.webmanifest",
+      "dest": "/manifest.webmanifest",
+      "headers": {
+        "headers": [
+          {
+            "key": "Content-Type",
+            "value": "application/manifest+json; charset=utf-8"
+          }
+        ]
+      }
+    },
+    {
+      "src": "/ngsw.json",
+      "dest": "/ngsw.json"
+    },
+    {
+      "src": "/ngsw-worker.js",
+      "dest": "/ngsw-worker.js"
+    },
+    {
+      "src": "/assets/(.*)",
+      "dest": "/assets/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
+    }
+  ]
+}

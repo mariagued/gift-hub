@@ -60,3 +60,15 @@ CREATE INDEX idx_draw_group ON "DRAW"("groupId");
 CREATE INDEX idx_pair_draw ON "PAIR"("drawId");
 CREATE INDEX idx_pair_giver ON "PAIR"("giverId");
 CREATE INDEX idx_pair_receiver ON "PAIR"("receiverId");
+
+-- Grant access to API roles
+GRANT USAGE ON SCHEMA public TO anon, authenticated, service_role;
+
+GRANT ALL ON ALL TABLES IN SCHEMA public TO anon, authenticated, service_role;
+GRANT ALL ON ALL SEQUENCES IN SCHEMA public TO anon, authenticated, service_role;
+GRANT ALL ON ALL FUNCTIONS IN SCHEMA public TO anon, authenticated, service_role;
+
+ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON TABLES TO anon, authenticated, service_role;
+ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON SEQUENCES TO anon, authenticated, service_role;
+ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON FUNCTIONS TO anon, authenticated, service_role;
+

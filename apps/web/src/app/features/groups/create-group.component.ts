@@ -146,7 +146,7 @@ export class CreateGroupComponent implements OnInit {
         this.router.navigate(['/groups', created.id]);
       }
     } catch {
-      this.erro.set('Erro ao salvar. Verifique se o json-server está rodando.');
+      this.erro.set('Erro ao salvar. Verifique a conexão com o servidor.');
     } finally {
       this.salvando.set(false);
     }

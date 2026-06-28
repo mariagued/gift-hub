@@ -5,21 +5,67 @@
       <p class="py-2 text-slate-500">Junte-se ao Gift Hub hoje</p>
     </div>
     <div class="card w-full shadow-xl bg-base-100 border border-slate-100">
-      <form class="card-body" (submit)="onRegister($event, nameInput, emailInput)">
+      <form class="card-body" [formGroup]="registerForm" (ngSubmit)="onRegister()">
+        @if (errorMessage()) {
+          <div class="alert alert-error text-sm py-2 mb-4">
+            <span>{{ errorMessage() }}</span>
+          </div>
+        }
+        @if (successMessage()) {
+          <div class="alert alert-success text-sm py-2 mb-4 text-white">
+            <span>{{ successMessage() }}</span>
+          </div>
+        }
         <div class="flex flex-col gap-1 w-full">
           <label class="text-sm font-medium text-slate-700 ml-1">Nome completo</label>
-          <input type="text" #nameInput placeholder="John Doe" class="input input-bordered w-full focus:border-primary focus:ring-1 focus:ring-primary transition-all" required />
+          <input type="text" formControlName="name" placeholder="John Doe"
+            class="input input-bordered w-full focus:border-primary focus:ring-1 focus:ring-primary transition-all"
+            [class.border-red-500]="isInvalid('name')" />
+          @if (isInvalid('name')) {
+            <p class="text-red-500 text-xs mt-1 font-semibold ml-1">
+              @if (registerForm.get('name')?.errors?.['required']) {
+                O nome é obrigatório.
+              } @else if (registerForm.get('name')?.errors?.['minlength']) {
+                O nome deve ter pelo menos 3 caracteres.
+              }
+            </p>
+          }
         </div>
         <div class="flex flex-col gap-1 w-full mt-2">
           <label class="text-sm font-medium text-slate-700 ml-1">Email</label>
-          <input type="email" #emailInput placeholder="you@example.com" class="input input-bordered w-full focus:border-primary focus:ring-1 focus:ring-primary transition-all" required />
+          <input type="email" formControlName="email" placeholder="you@example.com"
+            class="input input-bordered w-full focus:border-primary focus:ring-1 focus:ring-primary transition-all"
+            [class.border-red-500]="isInvalid('email')" />
+          @if (isInvalid('email')) {
+            <p class="text-red-500 text-xs mt-1 font-semibold ml-1">
+              @if (registerForm.get('email')?.errors?.['required']) {
+                O e-mail é obrigatório.
+              } @else if (registerForm.get('email')?.errors?.['email']) {
+                Insira um e-mail válido.
+              }
+            </p>
+          }
         </div>
         <div class="flex flex-col gap-1 w-full mt-2">
           <label class="text-sm font-medium text-slate-700 ml-1">Senha</label>
-          <input type="password" placeholder="••••••••" class="input input-bordered w-full focus:border-primary focus:ring-1 focus:ring-primary transition-all" required />
+          <input type="password" formControlName="password" placeholder="••••••••"
+            class="input input-bordered w-full focus:border-primary focus:ring-1 focus:ring-primary transition-all"
+            [class.border-red-500]="isInvalid('password')" />
+          @if (isInvalid('password')) {
+            <p class="text-red-500 text-xs mt-1 font-semibold ml-1">
+              @if (registerForm.get('password')?.errors?.['required']) {
+                A senha é obrigatória.
+              } @else if (registerForm.get('password')?.errors?.['minlength']) {
+                A senha deve ter pelo menos 6 caracteres.
+              }
+            </p>
+          }
         </div>
         <div class="mt-6">
-          <button type="submit" class="btn w-full text-white shadow-md hover:shadow-lg transition-shadow bg-gradient-to-r from-[#630ed4] to-[#7c3aed] border-none">Criar Conta</button>
+          <button type="submit" [disabled]="registerForm.invalid || loading()"
+            class="btn w-full text-white shadow-md hover:shadow-lg transition-shadow bg-gradient-to-r from-[#630ed4] to-[#7c3aed] border-none disabled:bg-slate-300 disabled:text-slate-500 disabled:cursor-not-allowed">
+            @if (loading()) { Criando... } @else { Criar Conta }
+          </button>
         </div>
         <div class="divider text-slate-400 text-sm my-4">Já tem uma conta?</div>
         <div class="text-center">

@@ -1,38 +1,53 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy, signal, inject } from '@angular/core';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
-import { environment } from '../../../../environments/environment';
+import { SupabaseService } from '../../../core/services/supabase.service';
 
 @Component({
   selector: 'app-login',
-  imports: [RouterLink],
+  imports: [RouterLink, ReactiveFormsModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LoginComponent {
-  constructor(private router: Router) {}
+  private fb = inject(FormBuilder);
+  private supabaseService = inject(SupabaseService);
+  private router = inject(Router);
 
-  async onLogin(event: Event, emailInput: HTMLInputElement) {
-    event.preventDefault();
-    const email = emailInput.value.trim();
-    if (!email) return;
+  loginForm: FormGroup = this.fb.group({
+    email: ['', [Validators.required, Validators.email]],
+    password: ['', [Validators.required, Validators.minLength(6)]]
+  });
 
-    // Default name formatting from email username
-    let name = email.split('@')[0];
-    name = name.charAt(0).toUpperCase() + name.slice(1);
+  errorMessage = signal<string | null>(null);
+  loading = signal(false);
 
-    try {
-      const res = await fetch(`${environment.apiUrl}/participants?email=${encodeURIComponent(email)}`);
-      if (res.ok) {
-        const matching = await res.json();
-        if (matching && matching.length > 0) {
-          name = matching[0].name;
-        }
-      }
-    } catch (e) {
-      console.error('Erro ao buscar participante para o login', e);
+  isInvalid(field: string): boolean {
+    const control = this.loginForm.get(field);
+    return !!(control && control.invalid && (control.dirty || control.touched));
+  }
+
+  async onLogin() {
+    if (this.loginForm.invalid) {
+      this.loginForm.markAllAsTouched();
+      return;
     }
 
-    localStorage.setItem('currentUser', JSON.stringify({ name, email }));
-    this.router.navigate(['/dashboard']);
+    this.errorMessage.set(null);
+    this.loading.set(true);
+
+    const { email, password } = this.loginForm.value;
+
+    try {
+      await this.supabaseService.signIn(email, password);
+      this.router.navigate(['/dashboard']);
+    } catch (error: any) {
+      this.errorMessage.set(error.message || 'Credenciais inválidas');
+    } finally {
+      this.loading.set(false);
+    }
   }
 }
+
+

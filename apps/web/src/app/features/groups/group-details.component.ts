@@ -1,12 +1,11 @@
 import { Component, signal, computed, inject, effect, input, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { FormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { SecretSantaService, Participant, MatchPair } from '../../core/services/secret-santa.service';
-import { TextInputComponent } from '../../shared/components/text-input.component';
 
 @Component({
   selector: 'app-group-details',
-  imports: [RouterLink, FormsModule, TextInputComponent],
+  imports: [RouterLink, ReactiveFormsModule],
   template: `
     <div class="space-y-6">
 
@@ -38,15 +37,29 @@ import { TextInputComponent } from '../../shared/components/text-input.component
           </div>
         }
 
-        <div class="flex flex-col sm:flex-row gap-3">
-          <app-text-input [(value)]="novoNome" placeholder="Nome do participante *" class="flex-1"></app-text-input>
-          <app-text-input [(value)]="novoEmail" type="email" placeholder="E-mail (opcional)" class="flex-1"></app-text-input>
-          <button (click)="adicionarParticipante()"
-                  [disabled]="salvando()"
-                  class="px-7 py-3 bg-purple-600 text-white font-bold rounded-2xl hover:bg-purple-700 transition-all active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed shadow-sm">
+        <form [formGroup]="participantForm" (ngSubmit)="adicionarParticipante()" class="flex flex-col sm:flex-row gap-3 items-start w-full">
+          <div class="w-full sm:flex-1">
+            <input type="text" formControlName="name" placeholder="Nome do participante *"
+                   class="w-full px-5 py-3 rounded-2xl border-2 border-slate-100 bg-slate-50 text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-4 focus:ring-purple-500/20 focus:border-purple-500 transition-all font-medium"
+                   [class.border-red-500]="isInvalid('name')">
+            @if (isInvalid('name')) {
+              <p class="text-red-500 text-xs mt-1 font-semibold ml-1">O nome é obrigatório (mín. 2 caracteres).</p>
+            }
+          </div>
+          <div class="w-full sm:flex-1">
+            <input type="email" formControlName="email" placeholder="E-mail (opcional)"
+                   class="w-full px-5 py-3 rounded-2xl border-2 border-slate-100 bg-slate-50 text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-4 focus:ring-purple-500/20 focus:border-purple-500 transition-all font-medium"
+                   [class.border-red-500]="isInvalid('email')">
+            @if (isInvalid('email')) {
+              <p class="text-red-500 text-xs mt-1 font-semibold ml-1">Insira um e-mail válido.</p>
+            }
+          </div>
+          <button type="submit"
+                  [disabled]="participantForm.invalid || salvando()"
+                  class="w-full sm:w-auto px-7 py-3 bg-purple-600 text-white font-bold rounded-2xl hover:bg-purple-700 transition-all active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed shadow-sm h-[52px]">
             @if (salvando()) { Salvando... } @else { + Adicionar }
           </button>
-        </div>
+        </form>
       </div>
 
       <!-- Barra de busca + botão sorteio -->
@@ -126,6 +139,7 @@ import { TextInputComponent } from '../../shared/components/text-input.component
   `
 })
 export class GroupDetailsComponent implements OnInit {
+  private fb = inject(FormBuilder);
   private service = inject(SecretSantaService);
 
   id = input<string>(''); // Captures the 'id' parameter from the route automatically
@@ -133,8 +147,11 @@ export class GroupDetailsComponent implements OnInit {
   participants = this.service.participantsSignal();
   matches = this.service.matchesSignal();
 
-  novoNome = signal('');
-  novoEmail = signal('');
+  participantForm: FormGroup = this.fb.group({
+    name: ['', [Validators.required, Validators.minLength(2)]],
+    email: ['', [Validators.email]]
+  });
+
   termoBusca = signal('');
   carregando = signal(true);
   salvando = signal(false);
@@ -169,25 +186,30 @@ export class GroupDetailsComponent implements OnInit {
     }
   }
 
+  isInvalid(field: string): boolean {
+    const control = this.participantForm.get(field);
+    return !!(control && control.invalid && (control.dirty || control.touched));
+  }
+
   async adicionarParticipante() {
-    this.erro.set('');
-    if (!this.novoNome().trim()) {
-      this.erro.set('O nome do participante é obrigatório.');
+    if (this.participantForm.invalid) {
+      this.participantForm.markAllAsTouched();
       return;
     }
+    this.erro.set('');
     this.salvando.set(true);
     try {
+      const { name, email } = this.participantForm.value;
       const novo: Participant = {
         id: crypto.randomUUID(),
-        name: this.novoNome().trim(),
-        email: this.novoEmail().trim() || undefined,
+        name: name.trim(),
+        email: email ? email.trim() : undefined,
         groupId: this.id()
       };
       await this.service.addParticipant(novo);
-      this.novoNome.set('');
-      this.novoEmail.set('');
+      this.participantForm.reset({ name: '', email: '' });
     } catch {
-      this.erro.set('Erro ao salvar. Verifique se o json-server está rodando.');
+      this.erro.set('Erro ao salvar. Verifique se a conexão está ativa.');
     } finally {
       this.salvando.set(false);
     }
@@ -206,3 +228,4 @@ export class GroupDetailsComponent implements OnInit {
     }
   }
 }
+

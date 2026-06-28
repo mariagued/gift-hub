@@ -1,5 +1,5 @@
-import { Injectable, signal } from '@angular/core';
-import { environment } from '../../../environments/environment';
+import { Injectable, signal, inject } from '@angular/core';
+import { SupabaseService } from './supabase.service';
 
 export interface Group {
   id: string;
@@ -30,10 +30,10 @@ export interface User {
   wishlist: string[];
 }
 
-const API = environment.apiUrl;
-
 @Injectable({ providedIn: 'root' })
 export class SecretSantaService {
+  private supabaseService = inject(SupabaseService);
+
   // ── Sinais globais ──────────────────────────────────────────
   private _groups      = signal<Group[]>([]);
   private _participants = signal<Participant[]>([]);
@@ -45,114 +45,342 @@ export class SecretSantaService {
 
   // ── GROUPS ──────────────────────────────────────────────────
   async loadGroups(): Promise<void> {
-    const res = await fetch(`${API}/groups`);
-    if (!res.ok) throw new Error('Falha ao carregar grupos');
-    this._groups.set(await res.json());
+    const { data: groupsData, error: groupsError } = await this.supabaseService.client
+      .from('GROUP')
+      .select('*');
+    if (groupsError) throw groupsError;
+
+    const { data: drawsData, error: drawsError } = await this.supabaseService.client
+      .from('DRAW')
+      .select('groupId');
+    if (drawsError) throw drawsError;
+
+    const { data: partsData, error: partsError } = await this.supabaseService.client
+      .from('PARTICIPANT')
+      .select('groupId');
+    if (partsError) throw partsError;
+
+    const drawnGroupIds = new Set((drawsData || []).map(d => d.groupId));
+
+    const partCounts: Record<string, number> = {};
+    for (const p of partsData || []) {
+      partCounts[p.groupId] = (partCounts[p.groupId] || 0) + 1;
+    }
+
+    const mapped: Group[] = (groupsData || []).map(g => {
+      const count = partCounts[g.id] || 0;
+      let status: 'Pendente' | 'Ativo' | 'Concluido' = 'Pendente';
+      if (drawnGroupIds.has(g.id)) {
+        status = 'Concluido';
+      } else if (count >= 3) {
+        status = 'Ativo';
+      }
+
+      return {
+        id: g.id,
+        name: g.name,
+        drawDate: g.eventDate,
+        budgetLimit: g.budgetLimit ? parseFloat(g.budgetLimit) : undefined,
+        status
+      };
+    });
+
+    this._groups.set(mapped);
   }
 
-  async createGroup(group: Omit<Group, 'id'>): Promise<Group> {
-    const body: Group = { ...group, id: crypto.randomUUID() };
-    const res = await fetch(`${API}/groups`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(body)
-    });
-    if (!res.ok) throw new Error('Falha ao criar grupo');
-    const created: Group = await res.json();
+  async createGroup(group: Omit<Group, 'id' | 'status'>): Promise<Group> {
+    const id = crypto.randomUUID();
+    const { error } = await this.supabaseService.client
+      .from('GROUP')
+      .insert({
+        id,
+        name: group.name,
+        eventDate: group.drawDate,
+        budgetLimit: group.budgetLimit
+      });
+    if (error) throw error;
+
+    const created: Group = {
+      id,
+      name: group.name,
+      drawDate: group.drawDate,
+      budgetLimit: group.budgetLimit,
+      status: 'Pendente'
+    };
+
+    // Auto-add creator as ADMIN of the group
+    const loggedIn = localStorage.getItem('currentUser');
+    if (loggedIn) {
+      try {
+        const userObj = JSON.parse(loggedIn);
+        if (userObj.id) {
+          await this.supabaseService.client
+            .from('PARTICIPANT')
+            .insert({
+              id: crypto.randomUUID(),
+              groupId: id,
+              userId: userObj.id,
+              role: 'ADMIN'
+            });
+        }
+      } catch (e) {
+        // Ignorar falha no auto-add do criador
+      }
+    }
+
     this._groups.update(prev => [...prev, created]);
     return created;
   }
 
   async updateGroup(id: string, changes: Partial<Omit<Group, 'id'>>): Promise<void> {
-    const current = this._groups().find(g => g.id === id);
-    if (!current) throw new Error('Grupo não encontrado');
-    const res = await fetch(`${API}/groups/${id}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ ...current, ...changes })
-    });
-    if (!res.ok) throw new Error('Falha ao atualizar grupo');
-    const updated: Group = await res.json();
-    this._groups.update(prev => prev.map(g => g.id === id ? updated : g));
+    const updateData: any = {};
+    if (changes.name !== undefined) updateData.name = changes.name;
+    if (changes.drawDate !== undefined) updateData.eventDate = changes.drawDate;
+    if (changes.budgetLimit !== undefined) updateData.budgetLimit = changes.budgetLimit;
+
+    const { error } = await this.supabaseService.client
+      .from('GROUP')
+      .update(updateData)
+      .eq('id', id);
+    if (error) throw error;
+
+    this._groups.update(prev => prev.map(g => {
+      if (g.id === id) {
+        return {
+          ...g,
+          name: changes.name !== undefined ? changes.name : g.name,
+          drawDate: changes.drawDate !== undefined ? changes.drawDate : g.drawDate,
+          budgetLimit: changes.budgetLimit !== undefined ? changes.budgetLimit : g.budgetLimit
+        };
+      }
+      return g;
+    }));
   }
 
   async deleteGroup(id: string): Promise<void> {
-    const res = await fetch(`${API}/groups/${id}`, { method: 'DELETE' });
-    if (!res.ok) throw new Error('Falha ao excluir grupo');
+    const { error } = await this.supabaseService.client
+      .from('GROUP')
+      .delete()
+      .eq('id', id);
+    if (error) throw error;
+
     this._groups.update(prev => prev.filter(g => g.id !== id));
-    // Remove participantes e matches do grupo excluído localmente
     this._participants.update(prev => prev.filter(p => p.groupId !== id));
     this._matches.update(prev => prev.filter(m => m.groupId !== id));
   }
 
   // ── PARTICIPANTS ─────────────────────────────────────────────
   async loadParticipants(groupId?: string): Promise<void> {
-    const url = groupId
-      ? `${API}/participants?groupId=${groupId}`
-      : `${API}/participants`;
-    const res = await fetch(url);
-    if (!res.ok) throw new Error('Falha ao carregar participantes');
-    this._participants.set(await res.json());
+    let query = this.supabaseService.client
+      .from('PARTICIPANT')
+      .select(`
+        id,
+        groupId,
+        user:USER!userId(name, email)
+      `);
+
+    if (groupId) {
+      query = query.eq('groupId', groupId);
+    }
+
+    const { data, error } = await query;
+    if (error) throw error;
+
+    const mapped: Participant[] = (data || []).map(p => ({
+      id: p.id,
+      name: (p.user as any)?.name || 'Desconhecido',
+      email: (p.user as any)?.email,
+      groupId: p.groupId
+    }));
+
+    this._participants.set(mapped);
   }
 
   async addParticipant(participant: Participant): Promise<void> {
-    const res = await fetch(`${API}/participants`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(participant)
-    });
-    if (!res.ok) throw new Error('Falha ao adicionar participante');
-    const created: Participant = await res.json();
+    const email = participant.email || `${participant.name.toLowerCase().replace(/\s+/g, '')}@example.com`;
+
+    // 1. Find or create the USER
+    let userId: string;
+    const { data: userData, error: userError } = await this.supabaseService.client
+      .from('USER')
+      .select('id')
+      .eq('email', email)
+      .maybeSingle();
+
+    if (userError) throw userError;
+
+    if (userData) {
+      userId = userData.id;
+    } else {
+      const newUserId = crypto.randomUUID();
+      const { error: insertUserError } = await this.supabaseService.client
+        .from('USER')
+        .insert({
+          id: newUserId,
+          email,
+          name: participant.name,
+          avatarUrl: `https://i.pravatar.cc/150?u=${newUserId}`
+        });
+      if (insertUserError) throw insertUserError;
+      userId = newUserId;
+    }
+
+    // 2. Insert PARTICIPANT
+    const newParticipantId = crypto.randomUUID();
+    const { error: partError } = await this.supabaseService.client
+      .from('PARTICIPANT')
+      .insert({
+        id: newParticipantId,
+        groupId: participant.groupId,
+        userId,
+        role: 'MEMBER'
+      });
+
+    if (partError) throw partError;
+
+    const created: Participant = {
+      id: newParticipantId,
+      name: participant.name,
+      email,
+      groupId: participant.groupId
+    };
     this._participants.update(prev => [...prev, created]);
   }
 
   async updateParticipant(id: string, changes: Partial<Omit<Participant, 'id'>>): Promise<void> {
-    const current = this._participants().find(p => p.id === id);
-    if (!current) throw new Error('Participante não encontrado');
-    const res = await fetch(`${API}/participants/${id}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ ...current, ...changes })
-    });
-    if (!res.ok) throw new Error('Falha ao atualizar participante');
-    const updated: Participant = await res.json();
-    this._participants.update(prev => prev.map(p => p.id === id ? updated : p));
+    // 1. Get participant's userId
+    const { data: partData, error: partError } = await this.supabaseService.client
+      .from('PARTICIPANT')
+      .select('userId')
+      .eq('id', id)
+      .single();
+    if (partError) throw partError;
+
+    // 2. Update USER if name/email changed
+    const userChanges: any = {};
+    if (changes.name) userChanges.name = changes.name;
+    if (changes.email) userChanges.email = changes.email;
+
+    if (Object.keys(userChanges).length > 0) {
+      const { error: userError } = await this.supabaseService.client
+        .from('USER')
+        .update(userChanges)
+        .eq('id', partData.userId);
+      if (userError) throw userError;
+    }
+
+    this._participants.update(prev => prev.map(p => {
+      if (p.id === id) {
+        return {
+          ...p,
+          name: changes.name || p.name,
+          email: changes.email || p.email
+        };
+      }
+      return p;
+    }));
   }
 
   async deleteParticipant(id: string): Promise<void> {
-    const res = await fetch(`${API}/participants/${id}`, { method: 'DELETE' });
-    if (!res.ok) throw new Error('Falha ao excluir participante');
+    const { error } = await this.supabaseService.client
+      .from('PARTICIPANT')
+      .delete()
+      .eq('id', id);
+    if (error) throw error;
+
     this._participants.update(prev => prev.filter(p => p.id !== id));
   }
 
   // ── MATCHES ──────────────────────────────────────────────────
   async loadMatches(groupId?: string): Promise<void> {
-    const url = groupId
-      ? `${API}/matches?groupId=${groupId}`
-      : `${API}/matches`;
-    const res = await fetch(url);
-    if (!res.ok) return;
-    this._matches.set(await res.json());
+    let query = this.supabaseService.client
+      .from('PAIR')
+      .select(`
+        id,
+        draw:DRAW!inner(id, groupId),
+        giver:PARTICIPANT!giverId(
+          id,
+          groupId,
+          user:USER!userId(id, name, email)
+        ),
+        receiver:PARTICIPANT!receiverId(
+          id,
+          groupId,
+          user:USER!userId(id, name, email)
+        )
+      `);
+
+    if (groupId) {
+      query = query.eq('draw.groupId', groupId);
+    }
+
+    const { data, error } = await query;
+    if (error) {
+      console.error('Error loading matches:', error);
+      return;
+    }
+
+    const mapped: MatchPair[] = (data || []).map(p => ({
+      id: p.id,
+      groupId: (p.draw as any).groupId,
+      giver: {
+        id: (p.giver as any).id,
+        name: (p.giver as any).user.name,
+        email: (p.giver as any).user.email,
+        groupId: (p.giver as any).groupId
+      },
+      receiver: {
+        id: (p.receiver as any).id,
+        name: (p.receiver as any).user.name,
+        email: (p.receiver as any).user.email,
+        groupId: (p.receiver as any).groupId
+      }
+    }));
+
+    this._matches.set(mapped);
   }
 
   async saveMatches(pairs: MatchPair[]): Promise<void> {
-    for (const pair of pairs) {
-      const res = await fetch(`${API}/matches`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(pair)
+    if (pairs.length === 0) return;
+    const groupId = pairs[0].groupId;
+    if (!groupId) throw new Error('Grupo inválido para sorteio');
+
+    // 1. Create a DRAW
+    const drawId = crypto.randomUUID();
+    const { error: drawError } = await this.supabaseService.client
+      .from('DRAW')
+      .insert({
+        id: drawId,
+        groupId
       });
-      if (!res.ok) throw new Error('Falha ao salvar par');
-    }
-    await this.loadMatches(pairs[0]?.groupId);
+    if (drawError) throw drawError;
+
+    // 2. Insert all PAIRs
+    const pairInserts = pairs.map(p => ({
+      id: crypto.randomUUID(),
+      drawId,
+      giverId: p.giver.id,
+      receiverId: p.receiver.id
+    }));
+
+    const { error: pairsError } = await this.supabaseService.client
+      .from('PAIR')
+      .insert(pairInserts);
+    if (pairsError) throw pairsError;
+
+    await this.loadMatches(groupId);
+    await this.loadGroups();
   }
 
   async clearMatches(groupId: string): Promise<void> {
-    const toDelete = this._matches().filter(m => m.groupId === groupId);
-    for (const m of toDelete) {
-      if (m.id) await fetch(`${API}/matches/${m.id}`, { method: 'DELETE' });
-    }
+    const { error } = await this.supabaseService.client
+      .from('DRAW')
+      .delete()
+      .eq('groupId', groupId);
+    if (error) throw error;
+
     this._matches.update(prev => prev.filter(m => m.groupId !== groupId));
+    await this.loadGroups();
   }
 
   // ── SORTEIO ──────────────────────────────────────────────────
@@ -171,13 +399,11 @@ export class SecretSantaService {
 
   /** Revelação individual */
   getMeuAmigoSorteado(grupoId: string): User {
-    // 1. Filtra as correspondências (matches) do grupo
-    const matches = this._matches().filter(m => m.groupId === grupoId || m.giver.groupId === grupoId);
-    
-    // 2. Busca o participante correspondente ao usuário logado
+    const matches = this._matches().filter(m => m.groupId === grupoId);
+
     let loggedInEmail = 'maria.guedes@gifthub.test';
     let loggedInName = 'Maria Guedes';
-    
+
     const stored = localStorage.getItem('currentUser');
     if (stored) {
       try {
@@ -188,15 +414,15 @@ export class SecretSantaService {
         // Fallback
       }
     }
-    
+
     let match: MatchPair | undefined;
-    
-    // O usuário solicitou que o sorteio sempre caia em um participante aleatório
+
+    // O sorteio sempre cai em um participante aleatório (mantendo a lógica original)
     if (matches.length > 0) {
       const randomIndex = Math.floor(Math.random() * matches.length);
       match = matches[randomIndex];
     }
-    
+
     if (!match) {
       return {
         id: 'no-match',
@@ -205,11 +431,9 @@ export class SecretSantaService {
         wishlist: []
       };
     }
-    
-    // O amigo secreto é o receptor (receiver)
+
     const receiver = match.receiver;
-    
-    // Sugestão de lista de desejos baseada no participante
+
     const wishlists: Record<string, string[]> = {
       'alice': ['Livro de Culinária Francesa', 'Kit de Jardinagem', 'Chocolates Finos'],
       'bob': ['Fone de Ouvido Noise Cancelling', 'Garrafa Térmica Premium', 'Moleskine'],
@@ -217,14 +441,13 @@ export class SecretSantaService {
       'daniel': ['Mouse Gamer Sem Fio', 'Camiseta de Banda Geek', 'Caneca Térmica'],
       'abe': ['Grãos de Café Especial', 'Livro de Ficção Científica', 'Mini Luminária USB']
     };
-    
+
     const key = receiver.name.toLowerCase().trim();
     const wishlist = wishlists[key] || wishlists[receiver.name.split(' ')[0].toLowerCase()] || ['Vale Presente R$ 100', 'Caixa de Bombons Especial', 'Caneca de Cerâmica'];
-    
-    // Avatar determinístico baseado no nome
+
     const nameSum = receiver.name.split('').reduce((sum, char) => sum + char.charCodeAt(0), 0);
     const avatarImgId = (nameSum % 70) + 1;
-    
+
     return {
       id: receiver.id,
       name: receiver.name,
