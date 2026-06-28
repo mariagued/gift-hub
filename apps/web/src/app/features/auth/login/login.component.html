@@ -5,7 +5,12 @@
             <p class="py-2 text-slate-500">Inicie sessão para acessar sua conta Gift Hub.</p>
         </div>
         <div class="card w-full shadow-xl bg-base-100 border border-slate-100">
-            <form class="card-body" (submit)="onLogin($event, emailInput)">
+            <form class="card-body" (submit)="onLogin($event, emailInput, passwordInput)">
+                @if (errorMessage()) {
+                    <div class="alert alert-error text-sm py-2 mb-4">
+                        <span>{{ errorMessage() }}</span>
+                    </div>
+                }
                 <div class="flex flex-col gap-1 w-full">
                     <label class="text-sm font-medium text-slate-700 ml-1">Email</label>
                     <input type="email" #emailInput placeholder="you@example.com"
@@ -17,7 +22,7 @@
                         <label class="text-sm font-medium text-slate-700 ml-1">Senha</label>
                         <a href="#" class="text-xs link link-hover text-slate-500">Esqueceu a senha?</a>
                     </div>
-                    <input type="password" placeholder="••••••••"
+                    <input type="password" #passwordInput placeholder="••••••••"
                         class="input input-bordered w-full focus:border-primary focus:ring-1 focus:ring-primary transition-all"
                         required />
                 </div>

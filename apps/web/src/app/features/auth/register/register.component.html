@@ -5,7 +5,17 @@
       <p class="py-2 text-slate-500">Junte-se ao Gift Hub hoje</p>
     </div>
     <div class="card w-full shadow-xl bg-base-100 border border-slate-100">
-      <form class="card-body" (submit)="onRegister($event, nameInput, emailInput)">
+      <form class="card-body" (submit)="onRegister($event, nameInput, emailInput, passwordInput)">
+        @if (errorMessage()) {
+          <div class="alert alert-error text-sm py-2 mb-4">
+            <span>{{ errorMessage() }}</span>
+          </div>
+        }
+        @if (successMessage()) {
+          <div class="alert alert-success text-sm py-2 mb-4 text-white">
+            <span>{{ successMessage() }}</span>
+          </div>
+        }
         <div class="flex flex-col gap-1 w-full">
           <label class="text-sm font-medium text-slate-700 ml-1">Nome completo</label>
           <input type="text" #nameInput placeholder="John Doe" class="input input-bordered w-full focus:border-primary focus:ring-1 focus:ring-primary transition-all" required />
@@ -16,7 +26,7 @@
         </div>
         <div class="flex flex-col gap-1 w-full mt-2">
           <label class="text-sm font-medium text-slate-700 ml-1">Senha</label>
-          <input type="password" placeholder="••••••••" class="input input-bordered w-full focus:border-primary focus:ring-1 focus:ring-primary transition-all" required />
+          <input type="password" #passwordInput placeholder="••••••••" class="input input-bordered w-full focus:border-primary focus:ring-1 focus:ring-primary transition-all" required />
         </div>
         <div class="mt-6">
           <button type="submit" class="btn w-full text-white shadow-md hover:shadow-lg transition-shadow bg-gradient-to-r from-[#630ed4] to-[#7c3aed] border-none">Criar Conta</button>
