@@ -113,7 +113,7 @@ export class GroupsComponent implements OnInit {
     try {
       await this.service.loadGroups();
     } catch {
-      this.erro.set('Erro ao carregar grupos. Verifique se o json-server está rodando.');
+      this.erro.set('Erro ao carregar grupos. Verifique a conexão com o servidor.');
     } finally {
       this.carregando.set(false);
     }

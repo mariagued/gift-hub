@@ -1,36 +1,47 @@
 import { Injectable, signal } from '@angular/core';
 import { createClient, SupabaseClient, User } from '@supabase/supabase-js';
+import { Observable } from 'rxjs';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { environment } from '../../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class SupabaseService {
   readonly client: SupabaseClient;
-  private _currentUser = signal<User | null>(null);
 
-  constructor() {
-    this.client = createClient(environment.supabaseUrl, environment.supabaseKey);
-
+  readonly authState$ = new Observable<User | null>(subscriber => {
     // Initial session load
     this.client.auth.getSession().then(({ data: { session } }) => {
-      this._currentUser.set(session?.user ?? null);
-      if (session?.user) {
-        this.syncCurrentUserToLocalStorage(session.user);
+      const user = session?.user ?? null;
+      if (user) {
+        this.syncCurrentUserToLocalStorage(user);
       }
+      subscriber.next(user);
     });
 
     // Listen for auth events
-    this.client.auth.onAuthStateChange((event, session) => {
-      this._currentUser.set(session?.user ?? null);
-      if (session?.user) {
-        this.syncCurrentUserToLocalStorage(session.user);
+    const { data: { subscription } } = this.client.auth.onAuthStateChange((event, session) => {
+      const user = session?.user ?? null;
+      if (user) {
+        this.syncCurrentUserToLocalStorage(user);
       } else {
         localStorage.removeItem('currentUser');
       }
+      subscriber.next(user);
     });
+
+    return () => {
+      subscription.unsubscribe();
+    };
+  });
+
+  private _currentUserSignal = toSignal(this.authState$, { initialValue: null });
+
+  constructor() {
+    this.client = createClient(environment.supabaseUrl, environment.supabaseKey);
   }
 
   currentUser() {
-    return this._currentUser.asReadonly();
+    return this._currentUserSignal;
   }
 
   async signUp(email: string, password: string, name: string) {

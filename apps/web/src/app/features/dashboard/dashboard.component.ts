@@ -1,7 +1,11 @@
-import { Component, signal, inject, OnInit, computed } from '@angular/core';
+import { Component, signal, inject, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
+import { toObservable } from '@angular/core/rxjs-interop';
+import { from, of } from 'rxjs';
+import { filter, switchMap, catchError } from 'rxjs/operators';
 import { SecretSantaService } from '../../core/services/secret-santa.service';
+import { SupabaseService } from '../../core/services/supabase.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -125,7 +129,8 @@ import { SecretSantaService } from '../../core/services/secret-santa.service';
     </div>
   `
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent {
+  private supabaseService = inject(SupabaseService);
   private service = inject(SecretSantaService);
 
   groups = this.service.groupsSignal();
@@ -133,6 +138,8 @@ export class DashboardComponent implements OnInit {
 
   carregando = signal(true);
   erro = signal('');
+
+  user$ = toObservable(this.supabaseService.currentUser());
 
   activeGroups = computed(() => {
     const allGroups = this.groups();
@@ -163,16 +170,25 @@ export class DashboardComponent implements OnInit {
     });
   });
 
-  async ngOnInit() {
-    try {
-      this.carregando.set(true);
-      await this.service.loadGroups();
-      await this.service.loadParticipants(); // Busca todos os participantes do banco de dados
-    } catch (e) {
-      console.error(e);
-      this.erro.set('Erro ao carregar os dados. Verifique a conexão com o servidor.');
-    } finally {
+  constructor() {
+    this.user$.pipe(
+      filter(user => !!user),
+      switchMap(() => {
+        this.carregando.set(true);
+        this.erro.set('');
+        return from(Promise.all([
+          this.service.loadGroups(),
+          this.service.loadParticipants()
+        ])).pipe(
+          catchError(err => {
+            console.error(err);
+            this.erro.set('Erro ao carregar os dados. Verifique a conexão com o servidor.');
+            return of(null);
+          })
+        );
+      })
+    ).subscribe(() => {
       this.carregando.set(false);
-    }
+    });
   }
 }

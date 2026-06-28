@@ -5,7 +5,7 @@
             <p class="py-2 text-slate-500">Inicie sessão para acessar sua conta Gift Hub.</p>
         </div>
         <div class="card w-full shadow-xl bg-base-100 border border-slate-100">
-            <form class="card-body" (submit)="onLogin($event, emailInput, passwordInput)">
+            <form class="card-body" [formGroup]="loginForm" (ngSubmit)="onLogin()">
                 @if (errorMessage()) {
                     <div class="alert alert-error text-sm py-2 mb-4">
                         <span>{{ errorMessage() }}</span>
@@ -13,22 +13,42 @@
                 }
                 <div class="flex flex-col gap-1 w-full">
                     <label class="text-sm font-medium text-slate-700 ml-1">Email</label>
-                    <input type="email" #emailInput placeholder="you@example.com"
+                    <input type="email" formControlName="email" placeholder="you@example.com"
                         class="input input-bordered w-full focus:border-primary focus:ring-1 focus:ring-primary transition-all"
-                        required />
+                        [class.border-red-500]="isInvalid('email')" />
+                    @if (isInvalid('email')) {
+                        <p class="text-red-500 text-xs mt-1 font-semibold ml-1">
+                            @if (loginForm.get('email')?.errors?.['required']) {
+                                O e-mail é obrigatório.
+                            } @else if (loginForm.get('email')?.errors?.['email']) {
+                                Insira um e-mail válido.
+                            }
+                        </p>
+                    }
                 </div>
                 <div class="flex flex-col gap-1 w-full mt-2">
                     <div class="flex justify-between items-center w-full">
                         <label class="text-sm font-medium text-slate-700 ml-1">Senha</label>
                         <a href="#" class="text-xs link link-hover text-slate-500">Esqueceu a senha?</a>
                     </div>
-                    <input type="password" #passwordInput placeholder="••••••••"
+                    <input type="password" formControlName="password" placeholder="••••••••"
                         class="input input-bordered w-full focus:border-primary focus:ring-1 focus:ring-primary transition-all"
-                        required />
+                        [class.border-red-500]="isInvalid('password')" />
+                    @if (isInvalid('password')) {
+                        <p class="text-red-500 text-xs mt-1 font-semibold ml-1">
+                            @if (loginForm.get('password')?.errors?.['required']) {
+                                A senha é obrigatória.
+                            } @else if (loginForm.get('password')?.errors?.['minlength']) {
+                                A senha deve ter pelo menos 6 caracteres.
+                            }
+                        </p>
+                    }
                 </div>
                 <div class="mt-6">
-                    <button type="submit"
-                        class="btn w-full text-white shadow-md hover:shadow-lg transition-shadow bg-gradient-to-r from-[#630ed4] to-[#7c3aed] border-none">Entrar</button>
+                    <button type="submit" [disabled]="loginForm.invalid || loading()"
+                        class="btn w-full text-white shadow-md hover:shadow-lg transition-shadow bg-gradient-to-r from-[#630ed4] to-[#7c3aed] border-none disabled:bg-slate-300 disabled:text-slate-500 disabled:cursor-not-allowed">
+                        @if (loading()) { Entrando... } @else { Entrar }
+                    </button>
                 </div>
                 <div class="divider text-slate-400 text-sm my-4">Novo aqui?</div>
                 <div class="text-center">
