@@ -6,7 +6,7 @@ import { environment } from '../../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class SupabaseService {
-  readonly client: SupabaseClient;
+  readonly client: SupabaseClient = createClient(environment.supabaseUrl, environment.supabaseKey);
 
   readonly authState$ = new Observable<User | null>(subscriber => {
     // Initial session load
@@ -36,9 +36,7 @@ export class SupabaseService {
 
   private _currentUserSignal = toSignal(this.authState$, { initialValue: null });
 
-  constructor() {
-    this.client = createClient(environment.supabaseUrl, environment.supabaseKey);
-  }
+  constructor() {}
 
   currentUser() {
     return this._currentUserSignal;
